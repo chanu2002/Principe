@@ -14,12 +14,15 @@ public class AdminImageServlet extends HttpServlet {
         String id = request.getParameter("id");
 
         AdminDAO dao = new AdminDAO();
+        
         byte[] image = dao.getImageById(id);
 
         
         
         if (image != null) {
             response.setContentType("image/jpeg");
+
+
             response.getOutputStream().write(image);
         }
     }
