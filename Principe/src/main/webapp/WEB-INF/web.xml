@@ -25,6 +25,17 @@
     <servlet-name>DisplayImageServlet</servlet-name>
     <url-pattern>/DisplayImageServlet</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>AdminBookingServlet</servlet-name>
+    <servlet-class>controller.AdminBookingServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AdminBookingServlet</servlet-name>
+    <url-pattern>/AdminBookingServlet</url-pattern>
+</servlet-mapping>
+
     <!-- Admin Login Servlet -->
     <!-- ========================= -->
     <servlet>
