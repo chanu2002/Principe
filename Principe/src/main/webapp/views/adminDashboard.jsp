@@ -16,9 +16,12 @@
 
 <a href="<%= request.getContextPath() %>/RoomServlet?action=list">
     Manage Rooms
-</a>
+</a><br>
 <a href="../LogoutServlet">Logout</a><br>
 <a href="facility/listFacility.jsp">Facilities</a><br>
+<a href="<%= request.getContextPath() %>/AdminBookingServlet?action=list">
+    Manage Bookings
+</a><br>
 <a href="admin/listAdmins.jsp">View Admin</a>
 
 

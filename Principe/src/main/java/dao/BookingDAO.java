@@ -1,6 +1,9 @@
 package dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.BookingDetail;
 import util.DBConnection;
 
@@ -90,4 +93,86 @@ public class BookingDAO {
 
         return booking;
     }
+    
+    public List<BookingDetail> getAllBookings() {
+
+        List<BookingDetail> list = new ArrayList<>();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT * FROM booking_detail ORDER BY booking_id DESC";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                BookingDetail b = new BookingDetail();
+
+                b.setBookingId(rs.getInt("booking_id"));
+                b.setUserId(rs.getInt("user_id"));
+                b.setRoomId(rs.getString("room_id"));
+                b.setBookingDate(rs.getDate("booking_date"));
+                b.setCheckinDate(rs.getDate("checkin_date"));
+                b.setCheckoutDate(rs.getDate("checkout_date"));
+                b.setNoOfGuests(rs.getInt("no_of_guests"));
+                b.setTotalAmount(rs.getBigDecimal("total_amount"));
+                b.setStatus(rs.getString("status"));
+
+                list.add(b);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+    public boolean updateBooking(BookingDetail booking) {
+
+        boolean result = false;
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            String sql = "UPDATE booking_detail SET " +
+                    "checkin_date=?, checkout_date=?, no_of_guests=?, status=? " +
+                    "WHERE booking_id=?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setDate(1, new java.sql.Date(booking.getCheckinDate().getTime()));
+            ps.setDate(2, new java.sql.Date(booking.getCheckoutDate().getTime()));
+            ps.setInt(3, booking.getNoOfGuests());
+            ps.setString(4, booking.getStatus());
+            ps.setInt(5, booking.getBookingId());
+
+            result = ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    public boolean deleteBooking(int bookingId) {
+
+        boolean result = false;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "DELETE FROM booking_detail WHERE booking_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bookingId);
+
+            result = ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }
+
