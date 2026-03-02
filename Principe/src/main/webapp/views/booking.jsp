@@ -102,74 +102,18 @@ if("NOT_AVAILABLE".equals(room.getAvailability())){
 %>
 
 <!-- BOOKING FORM -->
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal">
-    Book Now
-</button>
+<a href="<%= request.getContextPath() %>/BookingServlet?roomId=<%= room.getRoomId() %>"
+   class="btn btn-primary">
+   Book Now
+</a>
 
 <%
 }
 %>
 
-<!-- Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
 
-      <form action="<%= request.getContextPath() %>/BookingServlet" method="post">
 
-        <div class="modal-header">
-          <h5 class="modal-title">Book Room</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
 
-        <div class="modal-body">
-
-            <input type="hidden" name="roomId" value="<%= room.getRoomId() %>">
-
-            <div class="mb-3">
-                <label>Check-in Date</label>
-                <input type="date" id="checkIn" name="checkIn" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Check-out Date</label>
-                <input type="date" id="checkOut" name="checkOut" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Number of Guests</label>
-                <input type="number" name="guests" class="form-control" min="1" required>
-            </div>
-
-        </div>
-
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-success">
-                Pay
-            </button>
-        </div>
-
-      </form>
-
-    </div>
-  </div>
-</div>
-
-<script>
-// Set minimum date to today
-let today = new Date().toISOString().split('T')[0];
-document.getElementById("checkIn").setAttribute("min", today);
-
-document.getElementById("checkIn").addEventListener("change", function() {
-
-    let inDate = new Date(this.value);
-    inDate.setDate(inDate.getDate() + 1);
-
-    let minOut = inDate.toISOString().split('T')[0];
-    document.getElementById("checkOut").setAttribute("min", minOut);
-
-});
-</script>
 
 <br><br>
 

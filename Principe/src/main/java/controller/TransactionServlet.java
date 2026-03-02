@@ -61,28 +61,15 @@ public class TransactionServlet extends HttpServlet {
 
             if (transactionSuccess) {
 
-                // ==========================
-                // Update Booking Status
-                // ==========================
                 BookingDAO bookingDAO = new BookingDAO();
+
+                // 1️⃣ Update Booking Status to CONFIRMED
                 bookingDAO.updateStatus(bookingId, "CONFIRMED");
 
-                // ==========================
-                // Get Booking to Find Room
-                // ==========================
+                // 2️⃣ Get Booking Details
                 BookingDetail booking = bookingDAO.getBookingById(bookingId);
 
-                if (booking != null) {
-
-                    // ==========================
-                    // Update Room Availability
-                    // ==========================
-                    RoomDAO roomDAO = new RoomDAO();
-                    roomDAO.updateAvailability(
-                            booking.getRoomId(),
-                            "NOT_AVAILABLE"
-                    );
-                }
+               
 
                 // ==========================
                 // Send Email

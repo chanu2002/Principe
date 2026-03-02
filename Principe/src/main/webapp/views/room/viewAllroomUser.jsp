@@ -58,6 +58,8 @@ for(String type : roomTypes){
                 <h3><%= r.getType() %></h3>
 
                 <p><%= r.getDescription() %></p>
+                
+                <p>Max Guests: <%= r.getMaxGuest() %></p>
 
                 <!-- Not Available Message -->
                 <%

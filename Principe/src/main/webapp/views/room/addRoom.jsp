@@ -50,6 +50,9 @@
 
     Size:<br>
     <input type="text" name="size"><br><br>
+    
+    Max Guests:<br>
+<input type="number" name="maxGuest" min="1" required><br><br>
 
     Availability:<br>
     <select name="availability">

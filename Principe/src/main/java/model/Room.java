@@ -9,19 +9,28 @@ public class Room {
     private BigDecimal price;
     private String description;
     private String size;
-    private String availability;
+    private int maxGuest;
+    public int getMaxGuest() {
+		return maxGuest;
+	}
+
+	public void setMaxGuest(int maxGuest) {
+		this.maxGuest = maxGuest;
+	}
+	private String availability;
 
     public Room() {}
 
     public Room(String roomId, String type, BigDecimal price,
-                String description, String size, String availability) {
-        this.roomId = roomId;
-        this.type = type;
-        this.price = price;
-        this.description = description;
-        this.size = size;
-        this.availability = availability;
-    }
+            String description, String size, int maxGuest, String availability) {
+    this.roomId = roomId;
+    this.type = type;
+    this.price = price;
+    this.description = description;
+    this.size = size;
+    this.maxGuest = maxGuest;
+    this.availability = availability;
+}
 
     public String getRoomId() { return roomId; }
     public void setRoomId(String roomId) { this.roomId = roomId; }

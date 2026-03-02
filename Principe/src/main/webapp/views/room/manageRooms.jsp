@@ -67,6 +67,9 @@ RoomImageDAO imgDAO = new RoomImageDAO();
 
     Size:<br>
     <input type="text" name="size"><br><br>
+    
+        Max Guests:<br>
+<input type="number" name="maxGuest" min="1" required><br><br>
 
     Availability:<br>
     <select name="availability">
@@ -124,6 +127,7 @@ RoomImageDAO imgDAO = new RoomImageDAO();
     <th>Type</th>
     <th>Price</th>
     <th>Size</th>
+    <th>Maximum Guests</th>
     <th>Availability</th>
     <th>Facilities</th>
     <th>Images</th>
@@ -147,6 +151,7 @@ if(list != null){
     <td><%= r.getType() %></td>
     <td><%= r.getPrice() %></td>
     <td><%= r.getSize() %></td>
+    <td><%= r.getMaxGuest() %></td>
     <td><%= r.getAvailability() %></td>
 
     <!-- ================= FACILITIES DISPLAY ================= -->

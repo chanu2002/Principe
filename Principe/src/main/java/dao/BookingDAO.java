@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,31 +69,7 @@ public class BookingDAO {
         return result;
     }
     
-    public BookingDetail getBookingById(int bookingId) {
-
-        BookingDetail booking = null;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "SELECT * FROM booking_detail WHERE booking_id=?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookingId);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                booking = new BookingDetail();
-                booking.setBookingId(rs.getInt("booking_id"));
-                booking.setRoomId(rs.getString("room_id"));
-                booking.setUserId(rs.getInt("user_id"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return booking;
-    }
+ 
     
     public List<BookingDetail> getAllBookings() {
 
@@ -136,7 +113,8 @@ public class BookingDAO {
             Connection con = DBConnection.getConnection();
 
             String sql = "UPDATE booking_detail SET " +
-                    "checkin_date=?, checkout_date=?, no_of_guests=?, status=? " +
+                    "checkin_date=?, checkout_date=?, " +
+                    "no_of_guests=?, total_amount=?, status=? " +
                     "WHERE booking_id=?";
 
             PreparedStatement ps = con.prepareStatement(sql);
@@ -144,8 +122,9 @@ public class BookingDAO {
             ps.setDate(1, new java.sql.Date(booking.getCheckinDate().getTime()));
             ps.setDate(2, new java.sql.Date(booking.getCheckoutDate().getTime()));
             ps.setInt(3, booking.getNoOfGuests());
-            ps.setString(4, booking.getStatus());
-            ps.setInt(5, booking.getBookingId());
+            ps.setBigDecimal(4, booking.getTotalAmount());
+            ps.setString(5, booking.getStatus());
+            ps.setInt(6, booking.getBookingId());
 
             result = ps.executeUpdate() > 0;
 
@@ -173,6 +152,73 @@ public class BookingDAO {
         }
 
         return result;
+    }
+    
+    public BookingDetail getBookingById(int bookingId) {
+
+        BookingDetail booking = null;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT * FROM booking_detail WHERE booking_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bookingId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                booking = new BookingDetail();
+
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setUserId(rs.getInt("user_id"));
+                booking.setRoomId(rs.getString("room_id"));
+                booking.setBookingDate(rs.getDate("booking_date"));
+                booking.setCheckinDate(rs.getDate("checkin_date"));
+                booking.setCheckoutDate(rs.getDate("checkout_date"));
+                booking.setNoOfGuests(rs.getInt("no_of_guests"));
+                booking.setTotalAmount(rs.getBigDecimal("total_amount"));
+                booking.setStatus(rs.getString("status"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return booking;
+    }
+    
+    public boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut) {
+
+        boolean available = true;
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            String sql =
+                "SELECT COUNT(*) FROM booking_detail " +
+                "WHERE room_id = ? " +
+                "AND status IN ('PENDING','CONFIRMED') " +
+                "AND checkin_date < ? " +
+                "AND checkout_date > ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, roomId);
+            ps.setDate(2, java.sql.Date.valueOf(checkOut));   // FIXED
+            ps.setDate(3, java.sql.Date.valueOf(checkIn));    // FIXED
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                available = rs.getInt(1) == 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return available;
     }
 }
 

@@ -17,7 +17,7 @@ public class RoomDAO {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "INSERT INTO room (room_id, type, price, description, size, availability) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO room (room_id, type, price, description, size, max_guest, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, room.getRoomId());
@@ -25,7 +25,8 @@ public class RoomDAO {
             ps.setBigDecimal(3, room.getPrice());
             ps.setString(4, room.getDescription());
             ps.setString(5, room.getSize());
-            ps.setString(6, room.getAvailability());
+            ps.setInt(6, room.getMaxGuest());
+            ps.setString(7, room.getAvailability());
 
             status = ps.executeUpdate() > 0;
 
@@ -55,6 +56,7 @@ public class RoomDAO {
                 room.setPrice(rs.getBigDecimal("price"));
                 room.setDescription(rs.getString("description"));
                 room.setSize(rs.getString("size"));
+                room.setMaxGuest(rs.getInt("max_guest"));
                 room.setAvailability(rs.getString("availability"));
 
                 list.add(room);
@@ -87,6 +89,7 @@ public class RoomDAO {
                 room.setPrice(rs.getBigDecimal("price"));
                 room.setDescription(rs.getString("description"));
                 room.setSize(rs.getString("size"));
+                room.setMaxGuest(rs.getInt("max_guest"));
                 room.setAvailability(rs.getString("availability"));
             }
 
@@ -105,7 +108,7 @@ public class RoomDAO {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "UPDATE room SET type=?, price=?, description=?, size=?, availability=? WHERE room_id=?";
+            String sql = "UPDATE room SET type=?, price=?, description=?, size=?, max_guest=?, availability=? WHERE room_id=?";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
@@ -113,8 +116,9 @@ public class RoomDAO {
             ps.setBigDecimal(2, room.getPrice());
             ps.setString(3, room.getDescription());
             ps.setString(4, room.getSize());
-            ps.setString(5, room.getAvailability());
-            ps.setString(6, room.getRoomId());
+            ps.setInt(5, room.getMaxGuest());
+            ps.setString(6, room.getAvailability());
+            ps.setString(7, room.getRoomId());
 
             status = ps.executeUpdate() > 0;
 
@@ -194,4 +198,105 @@ public class RoomDAO {
 
         return result;
     }
+    
+    /*public List<Room> getAvailableRooms(String checkIn,
+            String checkOut,
+            int guests) {
+
+List<Room> list = new ArrayList<>();
+
+try {
+Connection con = DBConnection.getConnection();
+
+String sql =
+"SELECT * FROM room r " +
+"WHERE r.max_guest >= ? " +
+"AND r.room_id NOT IN ( " +
+"   SELECT b.room_id FROM booking_detail b " +
+"   WHERE ( ? < b.checkout_date AND ? > b.checkin_date ) " +
+")";
+
+PreparedStatement ps = con.prepareStatement(sql);
+
+ps.setInt(1, guests);
+ps.setDate(2, Date.valueOf(checkIn));
+ps.setDate(3, Date.valueOf(checkOut));
+
+ResultSet rs = ps.executeQuery();
+
+while (rs.next()) {
+Room room = new Room();
+room.setRoomId(rs.getString("room_id"));
+room.setType(rs.getString("type"));
+room.setPrice(rs.getBigDecimal("price"));
+room.setDescription(rs.getString("description"));
+room.setSize(rs.getString("size"));
+room.setMaxGuest(rs.getInt("max_guest"));
+room.setAvailability(rs.getString("availability"));
+list.add(room);
+}
+
+} catch (Exception e) {
+e.printStackTrace();
+}
+
+return list;
+}*/
+    
+    public List<Room> getAvailableRooms(String checkIn,
+            String checkOut,
+            Integer guests) {
+
+List<Room> list = new ArrayList<>();
+
+try {
+Connection con = DBConnection.getConnection();
+
+String sql =
+"SELECT * FROM room r " +
+"WHERE r.availability = 'AVAILABLE' " +   // NEW FILTER
+"AND (? IS NULL OR r.max_guest >= ?) " +
+"AND NOT EXISTS ( " +
+"   SELECT 1 FROM booking_detail b " +
+"   WHERE b.room_id = r.room_id " +
+"   AND b.status IN ('PENDING','CONFIRMED') " +
+"   AND b.checkin_date < ? " +
+"   AND b.checkout_date > ? " +
+")";
+
+PreparedStatement ps = con.prepareStatement(sql);
+
+if (guests == null) {
+ps.setNull(1, java.sql.Types.INTEGER);
+ps.setNull(2, java.sql.Types.INTEGER);
+} else {
+ps.setInt(1, guests);
+ps.setInt(2, guests);
+}
+
+ps.setDate(3, java.sql.Date.valueOf(checkOut));
+ps.setDate(4, java.sql.Date.valueOf(checkIn));
+
+ResultSet rs = ps.executeQuery();
+
+while (rs.next()) {
+
+Room room = new Room();
+room.setRoomId(rs.getString("room_id"));
+room.setType(rs.getString("type"));
+room.setPrice(rs.getBigDecimal("price"));
+room.setDescription(rs.getString("description"));
+room.setSize(rs.getString("size"));
+room.setMaxGuest(rs.getInt("max_guest"));
+room.setAvailability(rs.getString("availability"));
+
+list.add(room);
+}
+
+} catch (Exception e) {
+e.printStackTrace();
+}
+
+return list;
+}
 }

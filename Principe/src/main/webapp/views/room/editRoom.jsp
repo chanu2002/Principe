@@ -76,6 +76,10 @@ List<RoomImage> images =
     Size:<br>
     <input type="text" name="size"
            value="<%= room.getSize() %>"><br><br>
+           
+           Max Guests:<br>
+<input type="number" name="maxGuest"
+       value="<%= room.getMaxGuest() %>" min="1" required><br><br>
 
     Availability:<br>
     <select name="availability">
