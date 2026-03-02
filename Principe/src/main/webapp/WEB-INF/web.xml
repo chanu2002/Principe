@@ -17,6 +17,16 @@
 </servlet-mapping>
 
 <servlet>
+    <servlet-name>ReviewServlet</servlet-name>
+    <servlet-class>controller.ReviewServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ReviewServlet</servlet-name>
+    <url-pattern>/ReviewServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
     <servlet-name>DisplayImageServlet</servlet-name>
     <servlet-class>controller.DisplayImageServlet</servlet-class>
 </servlet>
@@ -163,17 +173,7 @@
     </servlet-mapping>
 
     <!-- ========================= -->
-    <!-- Review Servlet -->
-    <!-- ========================= -->
-    <servlet>
-        <servlet-name>ReviewServlet</servlet-name>
-        <servlet-class>controller.ReviewServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ReviewServlet</servlet-name>
-        <url-pattern>/ReviewServlet</url-pattern>
-    </servlet-mapping>
+ 
 	
 	
 </web-app>

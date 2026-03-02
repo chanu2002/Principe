@@ -6,6 +6,8 @@
 <%@ page import="dao.RoomFacilityDAO" %>
 <%@ page import="dao.FacilityDAO" %>
 <%@ page import="java.util.*" %>
+<%@ page import="dao.ReviewDAO" %>
+<%@ page import="model.Review" %>
 
 <%
     String roomId = request.getParameter("roomId");
@@ -116,6 +118,102 @@ if("NOT_AVAILABLE".equals(room.getAvailability())){
 
 
 <br><br>
+
+<hr>
+<h3>Customer Reviews</h3>
+
+<%
+ReviewDAO reviewDAO = new ReviewDAO();
+List<Review> reviews = reviewDAO.getByRoom(roomId);
+model.User loggedUser = (model.User) session.getAttribute("user");
+
+boolean alreadyReviewed = false;
+
+if (loggedUser != null) {
+    alreadyReviewed = reviewDAO.hasUserReviewed(roomId, loggedUser.getUserId());
+}
+
+if(reviews != null && !reviews.isEmpty()){
+    for(Review r : reviews){
+%>
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <h6 class="text-primary">
+            👤 <%= r.getCustomerName() %>
+        </h6>
+
+        ⭐ Rating: <%= r.getRating() %>/5
+        <p><%= r.getComments() %></p>
+
+        <% if(loggedUser != null && loggedUser.getUserId() == r.getUserId()){ %>
+
+        <!-- UPDATE -->
+        <form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+            <input type="hidden" name="roomId" value="<%= roomId %>">
+
+            <select name="rating" required>
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+            </select>
+
+            <textarea name="comments" required><%= r.getComments() %></textarea>
+
+            <button type="submit" class="btn btn-warning btn-sm">Update</button>
+        </form>
+
+        <!-- DELETE -->
+        <form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+            <input type="hidden" name="roomId" value="<%= roomId %>">
+
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+
+        <% } %>
+
+    </div>
+</div>
+
+<%
+    }
+}
+%>
+
+<hr>
+
+<% if(loggedUser != null && !alreadyReviewed){ %>
+
+<h4>Add Review</h4>
+
+<form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
+
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="roomId" value="<%= roomId %>">
+
+    <select name="rating" required>
+        <option value="">Select</option>
+        <option value="5">5</option>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+        <option value="1">1</option>
+    </select>
+
+    <textarea name="comments" required></textarea>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+</form>
+
+<% } %><br><br>
 
 <a href="<%= request.getContextPath() %>/RoomServlet?action=list">
     Back

@@ -23,6 +23,9 @@
     Manage Bookings
 </a><br>
 <a href="admin/listAdmins.jsp">View Admin</a>
+<a href="<%= request.getContextPath() %>/ReviewServlet?action=adminList">
+    Manage Reviews
+</a><br>
 
 
 </body>
