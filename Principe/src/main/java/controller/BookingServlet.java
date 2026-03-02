@@ -21,119 +21,113 @@ public class BookingServlet extends HttpServlet {
     // ==========================================
     // POST METHOD (Booking from booking page)
     // ==========================================
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
+HttpSession session = request.getSession(false);
+User user = (User) session.getAttribute("user");
 
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
-            return;
-        }
+if (user == null) {
+response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+return;
+}
 
-        try {
+try {
 
-            // ==========================
-            // Get Parameters
-            // ==========================
-            String roomId = request.getParameter("roomId");
-            String checkInStr = request.getParameter("checkIn");
-            String checkOutStr = request.getParameter("checkOut");
-            String guestsStr = request.getParameter("guests");
+String roomId = request.getParameter("roomId");
+String checkInStr = request.getParameter("checkIn");
+String checkOutStr = request.getParameter("checkOut");
+String guestsStr = request.getParameter("guests");
+String finalAmountStr = request.getParameter("finalAmount");
+String offerId = request.getParameter("offerId");
 
-            if (roomId == null || checkInStr == null ||
-                checkOutStr == null || guestsStr == null) {
+if (roomId == null || checkInStr == null ||
+  checkOutStr == null || guestsStr == null) {
 
-                response.sendRedirect(request.getContextPath() + "/views/error.jsp");
-                return;
-            }
+  response.sendRedirect(request.getContextPath() + "/views/error.jsp");
+  return;
+}
 
-            int guests = Integer.parseInt(guestsStr);
+int guests = Integer.parseInt(guestsStr);
 
-            // ==========================
-            // Get Room
-            // ==========================
-            RoomDAO roomDAO = new RoomDAO();
-            Room room = roomDAO.getRoomById(roomId);
+RoomDAO roomDAO = new RoomDAO();
+Room room = roomDAO.getRoomById(roomId);
 
-            if (room == null) {
-                response.sendRedirect(request.getContextPath() + "/views/error.jsp");
-                return;
-            }
+if (room == null) {
+  response.sendRedirect(request.getContextPath() + "/views/error.jsp");
+  return;
+}
 
-            // ==========================
-            // Date Calculation
-            // ==========================
-            LocalDate checkIn = LocalDate.parse(checkInStr);
-            LocalDate checkOut = LocalDate.parse(checkOutStr);
+LocalDate checkIn = LocalDate.parse(checkInStr);
+LocalDate checkOut = LocalDate.parse(checkOutStr);
 
-            long days = ChronoUnit.DAYS.between(checkIn, checkOut);
+long days = ChronoUnit.DAYS.between(checkIn, checkOut);
 
-            if (days <= 0) {
-                response.sendRedirect(request.getContextPath()
-                        + "/views/booking.jsp?roomId=" + roomId);
-                return;
-            }
+if (days <= 0) {
+  response.sendRedirect(request.getContextPath()
+          + "/views/booking.jsp?roomId=" + roomId);
+  return;
+}
 
-            // ==========================
-            // CHECK ROOM AVAILABILITY
-            // ==========================
-            BookingDAO bookingDAO = new BookingDAO();
+BookingDAO bookingDAO = new BookingDAO();
 
-            boolean available = bookingDAO.isRoomAvailable(roomId, checkIn, checkOut);
+boolean available =
+      bookingDAO.isRoomAvailable(roomId, checkIn, checkOut);
 
-            if (!available) {
-                response.sendRedirect(request.getContextPath()
-                        + "/views/error.jsp?msg=Room already booked for selected dates");
-                return;
-            }
+if (!available) {
+  response.sendRedirect(request.getContextPath()
+          + "/views/error.jsp");
+  return;
+}
 
-            // ==========================
-            // Calculate Total
-            // ==========================
-            BigDecimal totalAmount =
-                    room.getPrice().multiply(BigDecimal.valueOf(days));
+// ==========================
+// CALCULATE TOTAL
+// ==========================
 
-            // ==========================
-            // Create Booking Object
-            // ==========================
-            BookingDetail booking = new BookingDetail();
-            booking.setUserId(user.getUserId());
-            booking.setRoomId(roomId);
-            booking.setCheckinDate(Date.from(
-                    checkIn.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            booking.setCheckoutDate(Date.from(
-                    checkOut.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            booking.setNoOfGuests(guests);
-            booking.setTotalAmount(totalAmount);
-            booking.setStatus("PENDING");
+BigDecimal totalAmount;
 
-            // ==========================
-            // Insert Booking
-            // ==========================
-            int bookingId = bookingDAO.insertBooking(booking);
+if (finalAmountStr != null && !finalAmountStr.isEmpty()) {
+  totalAmount = new BigDecimal(finalAmountStr);
+} else {
+  totalAmount =
+          room.getPrice().multiply(BigDecimal.valueOf(days));
+}
 
-            if (bookingId > 0) {
+// ==========================
+// CREATE BOOKING
+// ==========================
 
-                response.sendRedirect(request.getContextPath()
-                        + "/views/transaction.jsp?bookingId="
-                        + bookingId
-                        + "&amount="
-                        + totalAmount);
+BookingDetail booking = new BookingDetail();
 
-            } else {
-                response.sendRedirect(request.getContextPath()
-                        + "/views/error.jsp");
-            }
+booking.setUserId(user.getUserId());
+booking.setRoomId(roomId);
+booking.setCheckinDate(Date.from(
+      checkIn.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+booking.setCheckoutDate(Date.from(
+      checkOut.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+booking.setNoOfGuests(guests);
+booking.setTotalAmount(totalAmount);
+booking.setStatus("PENDING");
+booking.setOfferId(offerId);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect(request.getContextPath()
-                    + "/views/error.jsp");
-        }
-    }
+int bookingId = bookingDAO.insertBooking(booking);
+
+if (bookingId > 0) {
+
+  response.sendRedirect(request.getContextPath()
+          + "/views/transaction.jsp?bookingId="
+          + bookingId
+          + "&amount="
+          + totalAmount);
+}
+
+} catch (Exception e) {
+e.printStackTrace();
+response.sendRedirect(request.getContextPath()
+      + "/views/error.jsp");
+}
+}
 
 
     // ==========================================

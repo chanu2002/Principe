@@ -3,33 +3,39 @@ package model;
 public class Offer {
 
     private String offerId;
-    public String getOfferId() {
-		return offerId;
-	}
-	public void setOfferId(String offerId) {
-		this.offerId = offerId;
-	}
-	public String getOfferName() {
-		return offerName;
-	}
-	public void setOfferName(String offerName) {
-		this.offerName = offerName;
-	}
-	public int getOfferRate() {
-		return offerRate;
-	}
-	public void setOfferRate(int offerRate) {
-		this.offerRate = offerRate;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	private String offerName;
-    private int offerRate;
+    private String offerName;
+    private int offerRate; // percentage
     private String description;
 
-    // Getters and Setters
+    public String getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(String offerId) {
+        this.offerId = offerId;
+    }
+
+    public String getOfferName() {
+        return offerName;
+    }
+
+    public void setOfferName(String offerName) {
+        this.offerName = offerName;
+    }
+
+    public int getOfferRate() {
+        return offerRate;
+    }
+
+    public void setOfferRate(int offerRate) {
+        this.offerRate = offerRate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

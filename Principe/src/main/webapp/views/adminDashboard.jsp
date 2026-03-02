@@ -26,6 +26,9 @@
 <a href="<%= request.getContextPath() %>/ReviewServlet?action=adminList">
     Manage Reviews
 </a><br>
+<a href="<%= request.getContextPath() %>/OfferServlet?action=list">
+    Manage Offers
+</a><br>
 
 
 </body>

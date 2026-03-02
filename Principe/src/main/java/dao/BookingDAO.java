@@ -18,9 +18,10 @@ public class BookingDAO {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "INSERT INTO booking_detail " +
-                    "(user_id, room_id, booking_date, checkin_date, checkout_date, no_of_guests, total_amount, status) " +
-                    "VALUES (?, ?, NOW(), ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO booking_detail "
+                    + "(user_id, room_id, booking_date, checkin_date, checkout_date, "
+                    + "no_of_guests, total_amount, status, offer_id) "
+                    + "VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement ps =
                     con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -32,7 +33,7 @@ public class BookingDAO {
             ps.setInt(5, booking.getNoOfGuests());
             ps.setBigDecimal(6, booking.getTotalAmount());
             ps.setString(7, booking.getStatus());
-
+            ps.setString(8, booking.getOfferId());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();

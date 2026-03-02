@@ -5,9 +5,12 @@
 <%@ page import="dao.RoomImageDAO" %>
 <%@ page import="dao.RoomFacilityDAO" %>
 <%@ page import="dao.FacilityDAO" %>
-<%@ page import="java.util.*" %>
 <%@ page import="dao.ReviewDAO" %>
+<%@ page import="dao.OfferDAO" %>
 <%@ page import="model.Review" %>
+<%@ page import="model.Offer" %>
+<%@ page import="model.User" %>
+<%@ page import="java.util.*" %>
 
 <%
     String roomId = request.getParameter("roomId");
@@ -31,15 +34,21 @@
 
     List<RoomImage> images = imgDAO.getImagesByRoom(roomId);
     List<Integer> roomFacilityIds = rfdao.getFacilityIdsByRoom(roomId);
+
+    ReviewDAO reviewDAO = new ReviewDAO();
+    List<Review> reviews = reviewDAO.getByRoom(roomId);
+
+    OfferDAO offerDAO = new OfferDAO();
+    List<Offer> offers = offerDAO.getAll();
+
+    User loggedUser = (User) session.getAttribute("user");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Room Booking</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body class="container mt-4">
@@ -51,8 +60,8 @@
 if(images != null){
     for(RoomImage img : images){
 %>
-        <img src="<%= request.getContextPath() %>/DisplayImageServlet?id=<%= img.getRoomImageId() %>"
-             width="200" height="150" class="me-2 mb-2">
+    <img src="<%= request.getContextPath() %>/DisplayImageServlet?id=<%= img.getRoomImageId() %>"
+         width="200" height="150" class="me-2 mb-2">
 <%
     }
 }
@@ -72,114 +81,53 @@ if(images != null){
 <%
 if(roomFacilityIds != null && !roomFacilityIds.isEmpty()){
 %>
-    <ul>
+<ul>
 <%
     for(Integer fid : roomFacilityIds){
         for(Facility f : fdao.getAll()){
             if(f.getFacilityId() == fid){
 %>
-                <li><%= f.getFacilityName() %></li>
+<li><%= f.getFacilityName() %></li>
 <%
             }
         }
     }
 %>
-    </ul>
+</ul>
 <%
 } else {
 %>
-    <p>No facilities available.</p>
+<p>No facilities available.</p>
 <%
 }
 %>
 
 <hr>
 
-<%
-if("NOT_AVAILABLE".equals(room.getAvailability())){
-%>
-    <p class="text-danger"><b>Not Available</b></p>
-<%
-} else {
-%>
+<!-- ================= OFFERS ================= -->
 
-<!-- BOOKING FORM -->
-<a href="<%= request.getContextPath() %>/BookingServlet?roomId=<%= room.getRoomId() %>"
-   class="btn btn-primary">
-   Book Now
-</a>
+<h3>Available Offers</h3>
 
+<form id="offerForm">
 <%
-}
+if(offers != null){
+    for(Offer o : offers){
 %>
 
+<div class="form-check">
+    <input class="form-check-input"
+           type="radio"
+           name="offer"
+           value="<%= o.getOfferId() %>"
+           data-rate="<%= o.getOfferRate() %>"
+           onclick="calculateTotal()">
 
-
-
-
-<br><br>
-
-<hr>
-<h3>Customer Reviews</h3>
-
-<%
-ReviewDAO reviewDAO = new ReviewDAO();
-List<Review> reviews = reviewDAO.getByRoom(roomId);
-model.User loggedUser = (model.User) session.getAttribute("user");
-
-boolean alreadyReviewed = false;
-
-if (loggedUser != null) {
-    alreadyReviewed = reviewDAO.hasUserReviewed(roomId, loggedUser.getUserId());
-}
-
-if(reviews != null && !reviews.isEmpty()){
-    for(Review r : reviews){
-%>
-
-<div class="card mb-3">
-    <div class="card-body">
-
-        <h6 class="text-primary">
-            👤 <%= r.getCustomerName() %>
-        </h6>
-
-        ⭐ Rating: <%= r.getRating() %>/5
-        <p><%= r.getComments() %></p>
-
-        <% if(loggedUser != null && loggedUser.getUserId() == r.getUserId()){ %>
-
-        <!-- UPDATE -->
-        <form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
-            <input type="hidden" name="action" value="update">
-            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
-            <input type="hidden" name="roomId" value="<%= roomId %>">
-
-            <select name="rating" required>
-                <option value="5">5</option>
-                <option value="4">4</option>
-                <option value="3">3</option>
-                <option value="2">2</option>
-                <option value="1">1</option>
-            </select>
-
-            <textarea name="comments" required><%= r.getComments() %></textarea>
-
-            <button type="submit" class="btn btn-warning btn-sm">Update</button>
-        </form>
-
-        <!-- DELETE -->
-        <form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
-            <input type="hidden" name="roomId" value="<%= roomId %>">
-
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-        </form>
-
-        <% } %>
-
-    </div>
+    <label class="form-check-label">
+        <b><%= o.getOfferName() %></b>
+        (<%= o.getOfferRate() %>% OFF)
+        <br>
+        <small><%= o.getDescription() %></small>
+    </label>
 </div>
 
 <%
@@ -187,37 +135,131 @@ if(reviews != null && !reviews.isEmpty()){
 }
 %>
 
-<hr>
-
-<% if(loggedUser != null && !alreadyReviewed){ %>
-
-<h4>Add Review</h4>
-
-<form action="<%= request.getContextPath() %>/ReviewServlet" method="post">
-
-    <input type="hidden" name="action" value="add">
-    <input type="hidden" name="roomId" value="<%= roomId %>">
-
-    <select name="rating" required>
-        <option value="">Select</option>
-        <option value="5">5</option>
-        <option value="4">4</option>
-        <option value="3">3</option>
-        <option value="2">2</option>
-        <option value="1">1</option>
-    </select>
-
-    <textarea name="comments" required></textarea>
-
-    <button type="submit" class="btn btn-success">Submit</button>
+<div class="form-check mt-2">
+    <input class="form-check-input"
+           type="radio"
+           name="offer"
+           value=""
+           checked
+           onclick="calculateTotal()">
+    <label class="form-check-label">No Offer</label>
+</div>
 
 </form>
 
-<% } %><br><br>
+<hr>
+
+<!-- ================= BOOKING BUTTON ================= -->
+
+<%
+if("NOT_AVAILABLE".equals(room.getAvailability())){
+%>
+<p class="text-danger"><b>Not Available</b></p>
+<%
+} else {
+%>
+
+<form action="<%= request.getContextPath() %>/BookingServlet"
+      method="post">
+
+    <input type="hidden" name="roomId" value="<%= roomId %>">
+    <input type="hidden" id="finalAmount" name="finalAmount">
+    <input type="hidden" id="selectedOffer" name="offerId">
+
+    <!-- You must already have these fields in your real form -->
+    <input type="hidden" name="checkIn" value="<%= session.getAttribute("checkIn") %>">
+    <input type="hidden" name="checkOut" value="<%= session.getAttribute("checkOut") %>">
+    <input type="hidden" name="guests" value="<%= session.getAttribute("guests") %>">
+
+    <h4>
+        Total Amount: $
+        <span id="totalDisplay">
+            <%= room.getPrice() %>
+        </span>
+    </h4>
+
+    <button type="submit" class="btn btn-primary">
+        Confirm Booking
+    </button>
+
+</form>
+
+<%
+}
+%>
+
+<hr>
+
+<!-- ================= REVIEWS ================= -->
+
+<h3>Customer Reviews</h3>
+
+<%
+if(reviews != null && !reviews.isEmpty()){
+    for(Review r : reviews){
+%>
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <b>👤 <%= r.getCustomerName() %></b><br>
+        ⭐ <%= r.getRating() %>/5
+        <p><%= r.getComments() %></p>
+
+    </div>
+</div>
+
+<%
+    }
+} else {
+%>
+<p>No reviews yet.</p>
+<%
+}
+%>
+
+<br>
 
 <a href="<%= request.getContextPath() %>/RoomServlet?action=list">
     Back
 </a>
+
+<!-- ================= SCRIPT ================= -->
+
+<script>
+
+let basePrice = <%= room.getPrice() %>;
+
+function calculateTotal(){
+
+    let selected =
+        document.querySelector('input[name="offer"]:checked');
+
+    let total = basePrice;
+
+    if(selected && selected.value !== ""){
+
+        let rate = selected.getAttribute("data-rate");
+
+        let discount = (total * rate) / 100;
+
+        total = total - discount;
+
+        document.getElementById("selectedOffer").value =
+            selected.value;
+
+    } else {
+        document.getElementById("selectedOffer").value = "";
+    }
+
+    document.getElementById("totalDisplay").innerText =
+        total.toFixed(2);
+
+    document.getElementById("finalAmount").value =
+        total.toFixed(2);
+}
+
+</script>
 
 </body>
 </html>
