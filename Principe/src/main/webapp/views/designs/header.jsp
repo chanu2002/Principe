@@ -80,7 +80,7 @@
             </div>
 
             <div>
-                <a href="#">ENGLISH</a>
+                <a href="views/adminLogin.jsp">Admin Login</a>
                 <a href="views/register.jsp">Register</a>
                 <a href="views/login.jsp"class="book-btn">BOOK NOW</a>
             </div>
