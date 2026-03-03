@@ -12,6 +12,5 @@
 <h1>Welcome to Hotel Management System</h1>
 
 
-
 </body>
 </html>
