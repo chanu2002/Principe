@@ -42,6 +42,11 @@
     List<Offer> offers = offerDAO.getAll();
 
     User loggedUser = (User) session.getAttribute("user");
+
+    boolean hasReviewed = false;
+    if (loggedUser != null) {
+        hasReviewed = reviewDAO.hasUserReviewed(roomId, loggedUser.getUserId());
+    }
 %>
 
 <!DOCTYPE html>
@@ -104,8 +109,6 @@ if(roomFacilityIds != null && !roomFacilityIds.isEmpty()){
 
 <hr>
 
-<!-- ================= OFFERS ================= -->
-
 <h3>Available Offers</h3>
 
 <form id="offerForm">
@@ -113,7 +116,6 @@ if(roomFacilityIds != null && !roomFacilityIds.isEmpty()){
 if(offers != null){
     for(Offer o : offers){
 %>
-
 <div class="form-check">
     <input class="form-check-input"
            type="radio"
@@ -129,7 +131,6 @@ if(offers != null){
         <small><%= o.getDescription() %></small>
     </label>
 </div>
-
 <%
     }
 }
@@ -149,8 +150,6 @@ if(offers != null){
 
 <hr>
 
-<!-- ================= BOOKING BUTTON ================= -->
-
 <%
 if("NOT_AVAILABLE".equals(room.getAvailability())){
 %>
@@ -166,16 +165,13 @@ if("NOT_AVAILABLE".equals(room.getAvailability())){
     <input type="hidden" id="finalAmount" name="finalAmount">
     <input type="hidden" id="selectedOffer" name="offerId">
 
-    <!-- You must already have these fields in your real form -->
     <input type="hidden" name="checkIn" value="<%= session.getAttribute("checkIn") %>">
     <input type="hidden" name="checkOut" value="<%= session.getAttribute("checkOut") %>">
     <input type="hidden" name="guests" value="<%= session.getAttribute("guests") %>">
 
     <h4>
         Total Amount: $
-        <span id="totalDisplay">
-            <%= room.getPrice() %>
-        </span>
+        <span id="totalDisplay"><%= room.getPrice() %></span>
     </h4>
 
     <button type="submit" class="btn btn-primary">
@@ -202,9 +198,54 @@ if(reviews != null && !reviews.isEmpty()){
 <div class="card mb-3">
     <div class="card-body">
 
-        <b>👤 <%= r.getCustomerName() %></b><br>
-        ⭐ <%= r.getRating() %>/5
+        <!-- USER NAME ON TOP -->
+        <h5 class="card-title"><%= r.getCustomerName() %></h5>
+        <p>⭐ <%= r.getRating() %>/5</p>
         <p><%= r.getComments() %></p>
+
+        <% if (loggedUser != null && loggedUser.getUserId() == r.getUserId()) { %>
+
+        <!-- UPDATE FORM -->
+        <form action="<%= request.getContextPath() %>/ReviewServlet"
+              method="post" class="mb-2">
+
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="roomId" value="<%= roomId %>">
+            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+
+            <select name="rating" class="form-control mb-2" required>
+                <option value="5" <%= r.getRating()==5?"selected":"" %>>5</option>
+                <option value="4" <%= r.getRating()==4?"selected":"" %>>4</option>
+                <option value="3" <%= r.getRating()==3?"selected":"" %>>3</option>
+                <option value="2" <%= r.getRating()==2?"selected":"" %>>2</option>
+                <option value="1" <%= r.getRating()==1?"selected":"" %>>1</option>
+            </select>
+
+            <textarea name="comments"
+                      class="form-control mb-2"
+                      required><%= r.getComments() %></textarea>
+
+            <button type="submit"
+                    class="btn btn-warning btn-sm">
+                Update
+            </button>
+        </form>
+
+        <!-- DELETE FORM -->
+        <form action="<%= request.getContextPath() %>/ReviewServlet"
+              method="post">
+
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="roomId" value="<%= roomId %>">
+            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+
+            <button type="submit"
+                    class="btn btn-danger btn-sm">
+                Delete
+            </button>
+        </form>
+
+        <% } %>
 
     </div>
 </div>
@@ -218,13 +259,58 @@ if(reviews != null && !reviews.isEmpty()){
 }
 %>
 
+<!-- ADD REVIEW (ONLY IF NOT REVIEWED) -->
+
+<% if (loggedUser == null) { %>
+
+<p class="text-danger">
+    Please <a href="<%= request.getContextPath() %>/views/login.jsp">
+    login</a> to add a review.
+</p>
+
+<% } else if (!hasReviewed) { %>
+
+<h4>Add Your Review</h4>
+
+<form action="<%= request.getContextPath() %>/ReviewServlet"
+      method="post">
+
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="roomId" value="<%= roomId %>">
+
+    <div class="mb-2">
+        <label>Rating</label>
+        <select name="rating" class="form-control" required>
+            <option value="">Select</option>
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Average</option>
+            <option value="1">1 - Poor</option>
+        </select>
+    </div>
+
+    <div class="mb-2">
+        <label>Comments</label>
+        <textarea name="comments"
+                  class="form-control"
+                  required></textarea>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Submit Review
+    </button>
+
+</form>
+
+<% } %>
+
 <br>
 
 <a href="<%= request.getContextPath() %>/RoomServlet?action=list">
     Back
 </a>
-
-<!-- ================= SCRIPT ================= -->
 
 <script>
 

@@ -62,7 +62,7 @@
     }
 
     .book-btn {
-        background: white;
+        background: blue;
         color: black;
         padding: 8px 15px;
         border-radius: 4px;
@@ -81,8 +81,8 @@
 
             <div>
                 <a href="#">ENGLISH</a>
-                <a href="#">MANAGE BOOKINGS</a>
-                <a href="#" class="book-btn">BOOK NOW</a>
+                <a href="views/register.jsp">Register</a>
+                <a href="views/login.jsp"class="book-btn">BOOK NOW</a>
             </div>
         </div>
 

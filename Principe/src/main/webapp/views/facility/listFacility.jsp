@@ -5,6 +5,11 @@
     List<Facility> list = dao.getAll();
 %>
 
+ <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
+
 <table border="1">
 <tr>
     <th>ID</th>

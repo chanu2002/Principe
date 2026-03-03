@@ -7,6 +7,10 @@ List<Offer> list =
 %>
 
 <h2>Manage Offers</h2>
+ <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
 
 <a href="<%= request.getContextPath() %>/views/admin/addOffer.jsp"
    class="btn btn-primary">

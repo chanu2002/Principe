@@ -1,4 +1,17 @@
 <%@ page language="java" %>
+<%
+    // Prevent browser caching
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+
+    // If already logged in, redirect to dashboard
+    if (session.getAttribute("admin") != null) {
+        response.sendRedirect("adminDashboard.jsp");
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +21,9 @@
 
 <h2>Admin Login</h2>
 
-<form action="../AdminLoginServlet" method="post">
-    Username: <input type="text" name="username"><br><br>
-    Password: <input type="password" name="password"><br><br>
+<form action="<%= request.getContextPath() %>/AdminLoginServlet" method="post">
+    Username: <input type="text" name="username" required><br><br>
+    Password: <input type="password" name="password" required><br><br>
     <input type="submit" value="Login">
 </form>
 

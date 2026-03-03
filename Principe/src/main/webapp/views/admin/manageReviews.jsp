@@ -15,6 +15,10 @@
 <html>
 <head>
     <title>Manage Reviews</title>
+     <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 

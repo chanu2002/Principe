@@ -24,6 +24,13 @@ RoomImageDAO imgDAO = new RoomImageDAO();
 <html>
 <head>
     <title>Manage Rooms</title>
+    
+    <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
+
+<br><br>
 </head>
 <body>
 

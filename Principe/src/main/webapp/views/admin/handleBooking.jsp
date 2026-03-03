@@ -2,6 +2,11 @@
 
 <h2>Manage Bookings</h2>
 
+ <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
+
 <table border="1" cellpadding="8">
 <tr>
     <th>ID</th>

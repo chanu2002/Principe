@@ -17,6 +17,10 @@
 <html>
 <head>
     <title>Admin List</title>
+     <button type="button"
+        onclick="window.location.href='<%= request.getContextPath() %>/views/adminDashboard.jsp'">
+    ⬅ Back to Dashboard
+</button>
 
     <!-- Simple Bootstrap CDN -->
     <link rel="stylesheet"

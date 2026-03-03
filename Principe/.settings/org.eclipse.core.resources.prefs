@@ -1,5 +1,9 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/views/admin/handleBooking.jsp=UTF-8
+encoding//src/main/webapp/views/admin/listAdmins.jsp=UTF-8
+encoding//src/main/webapp/views/admin/manageOffers.jsp=UTF-8
 encoding//src/main/webapp/views/admin/manageReviews.jsp=UTF-8
 encoding//src/main/webapp/views/booking.jsp=UTF-8
+encoding//src/main/webapp/views/facility/listFacility.jsp=UTF-8
 encoding//src/main/webapp/views/transaction.jsp=UTF-8
 encoding/<project>=UTF-8
