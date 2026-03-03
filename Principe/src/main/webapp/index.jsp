@@ -10,6 +10,5 @@
 <jsp:include page="/views/designs/header.jsp" />
 
 <h1>Welcome to Hotel Management System</h1>
-
 </body>
 </html>
