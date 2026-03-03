@@ -29,32 +29,7 @@ public class UserDAO {
         return false;
     }
 
-    /*public User login(String username, String password) {
-        User user = null;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "SELECT * FROM user WHERE username=? AND password=?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setName(rs.getString("name"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }*/
-    
+   
     public User login(String username, String password) {
 
         User user = null;

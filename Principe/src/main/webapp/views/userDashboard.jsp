@@ -13,6 +13,8 @@
 </head>
 <body>
 
+<jsp:include page="/views/designs/header.jsp" />
+
 <h2>User Dashboard</h2>
 
 <!-- Access through Servlet -->

@@ -232,11 +232,47 @@ body{
                 <strong>PRINCIPE</strong>
             </div>
 
-            <div>
-                <a href="${pageContext.request.contextPath}/views/adminLogin.jsp">Admin Login</a>
-                <a href="${pageContext.request.contextPath}/views/register.jsp">Register</a>
-                <a href="${pageContext.request.contextPath}/views/login.jsp" class="book-btn">BOOK NOW</a>
-            </div>
+           <div>
+<%
+    model.User user = (model.User) session.getAttribute("user");
+
+    if(user == null){
+%>
+
+        <a href="${pageContext.request.contextPath}/views/adminLogin.jsp">
+            Admin Login
+        </a>
+
+        <a href="${pageContext.request.contextPath}/views/register.jsp">
+            Register
+        </a>
+
+        <a href="${pageContext.request.contextPath}/views/login.jsp"
+           class="book-btn">
+           BOOK NOW
+        </a>
+
+<%
+    } else {
+%>
+
+        <span style="
+    color:#ffd700;
+    font-weight:600;
+    margin-right:15px;
+">
+    👤 <%= user.getName() %>
+</span>
+
+        <a href="${pageContext.request.contextPath}/LogoutServlet"
+           class="book-btn">
+           Logout
+        </a>
+
+<%
+    }
+%>
+</div>
         </div>
 
         <div class="brand-center">
@@ -245,6 +281,36 @@ body{
         </div>
 
         <div class="nav-menu">
+         	<%
+    model.User userr = (model.User) session.getAttribute("user");
+    if(userr == null){
+%>
+
+    <a href="${pageContext.request.contextPath}/index.jsp">Home</a>
+
+<%
+    }
+%>
+
+<%
+    model.User userrr = (model.User) session.getAttribute("user");
+
+    String currentPage = request.getRequestURI();
+    boolean isDashboard = currentPage.contains("userDashboard.jsp");
+
+    if(userrr != null && !isDashboard){
+%>
+
+        <a href="${pageContext.request.contextPath}/views/userDashboard.jsp"
+           class="book-btn">
+           BOOK NOW
+        </a>
+
+<%
+    }
+%>
+
+
             <a href="${pageContext.request.contextPath}/views/UserPages/RoomsSuite.jsp">ROOMS & SUITES</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Dining.jsp">DINING</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Experience.jsp">EXPERIENCES</a>
