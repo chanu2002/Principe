@@ -32,6 +32,7 @@
 
 </head>
 <body>
+<%@ include file="designs/adminheader.jsp" %>
 
 <h2>Admin Dashboard</h2>
 

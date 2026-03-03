@@ -1,39 +1,3 @@
-/*package dao;
-
-import java.sql.*;
-import model.Admin;
-import util.DBConnection;
-
-public class AdminDAO {
-
-    public Admin login(String username, String password) {
-        Admin admin = null;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "SELECT * FROM admin WHERE admin_username=? AND admin_password=?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                admin = new Admin();
-                admin.setAdminId(rs.getString("admin_id"));
-                admin.setUsername(rs.getString("admin_username"));
-                admin.setName(rs.getString("admin_name"));
-                admin.setRole(rs.getString("admin_role"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return admin;
-    }
-}*/
-
 package dao;
 
 import java.sql.*;
@@ -43,7 +7,7 @@ import util.DBConnection;
 
 public class AdminDAO {
 	
-	 public Admin login(String username, String password) {
+	 /*public Admin login(String username, String password) {
 	        Admin admin = null;
 
 	        try {
@@ -68,7 +32,40 @@ public class AdminDAO {
 	        }
 
 	        return admin;
+	    }*/
+	
+	public Admin login(String username, String password) {
+
+	    Admin admin = null;
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+
+	        String sql = "SELECT * FROM admin WHERE admin_username=? AND admin_password=?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+
+	        ps.setString(1, username);
+	        ps.setString(2, password);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+
+	            admin = new Admin();
+	            admin.setAdminId(rs.getString("admin_id"));
+	            admin.setUsername(rs.getString("admin_username"));
+	            admin.setPassword(rs.getString("admin_password"));
+	            admin.setName(rs.getString("admin_name"));
+	            admin.setRole(rs.getString("admin_role"));
+	            admin.setImage(rs.getBytes("admin_image")); // ✅ ADD THIS
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
 	    }
+
+	    return admin;
+	}
 	 
 	 public byte[] getImageById(String id) {
 

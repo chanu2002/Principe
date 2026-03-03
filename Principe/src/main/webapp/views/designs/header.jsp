@@ -80,9 +80,15 @@
             </div>
 
             <div>
-                <a href="views/adminLogin.jsp">Admin Login</a>
-                <a href="views/register.jsp">Register</a>
-                <a href="views/login.jsp"class="book-btn">BOOK NOW</a>
+                <a href="${pageContext.request.contextPath}/views/adminLogin.jsp">
+    Admin Login
+</a>
+                <a href="${pageContext.request.contextPath}/views/register.jsp">
+    Register
+</a>
+                <a href="${pageContext.request.contextPath}/views/login.jsp" class="book-btn">
+    BOOK NOW
+</a>
             </div>
         </div>
 
@@ -92,12 +98,14 @@
         </div>
 
         <div class="nav-menu">
-            <a href="#">ROOMS & SUITES</a>
-            <a href="#">DINING</a>
-            <a href="#">EXPERIENCES</a>
-            <a href="#">OFFERS</a>
-            <a href="#">GALLERY</a>
-            <a href="#">ESG</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/RoomsSuite.jsp">
+    ROOMS & SUITES
+</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Dining.jsp">DINING</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Experience.jsp">EXPERIENCES</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Offers.jsp">OFFERS</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Gallery.jsp">GALLERY</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Esg.jsp">ESG</a>
         </div>
 
     </div>
