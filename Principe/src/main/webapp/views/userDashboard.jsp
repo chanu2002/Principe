@@ -32,13 +32,13 @@
         }
 
         /* Main section */
-        .main-content{
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            padding:80px 20px; /* space below header automatically */
-        }
-
+        .main-content {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:80px 20px; /* current */
+    padding-top: 20px; /* add this to clear fixed header */
+}
         /* Glass card */
         .glass-card{
             width:100%;

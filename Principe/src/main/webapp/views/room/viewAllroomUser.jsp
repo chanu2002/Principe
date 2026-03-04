@@ -27,22 +27,26 @@ String[] roomTypes = {
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:'Poppins', sans-serif;
         }
 
-        body{
+        body {
             background:
                 linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
                 url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85');
-            background-size:cover;
-            background-attachment:fixed;
-            color:white;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Content wrapper for spacing */
-        .content{
-            padding:50px 60px;
-        }
+
+/* PUSH CONTENT BELOW FIXED HEADER */
+.content {
+    padding: 50px 60px;
+    padding-top: 20px; /* 230px header + 50px spacing */
+}
+
 
         h1{
             text-align:center;

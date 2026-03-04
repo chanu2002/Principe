@@ -8,10 +8,16 @@
         return;
     }
 
-    String bookingId = request.getParameter("bookingId");
+    String roomId = request.getParameter("roomId");
+    String checkIn = request.getParameter("checkIn");
+    String checkOut = request.getParameter("checkOut");
+    String guests = request.getParameter("guests");
+    String offerId = request.getParameter("offerId");
     String amount = request.getParameter("amount");
 
-    if (bookingId == null || amount == null) {
+    if (roomId == null || checkIn == null || checkOut == null 
+            || guests == null || amount == null) {
+
         response.sendRedirect(request.getContextPath() + "/views/error.jsp");
         return;
     }
@@ -95,7 +101,7 @@ body{
 
     <!-- PAYMENT SUMMARY -->
     <div class="summary-box">
-        <strong>Booking ID:</strong> <%= bookingId %><br>
+        <strong>Room ID:</strong> <%= roomId %>
         <strong>Total Amount:</strong> 
         <span style="font-size:20px; font-weight:700;">
             $<%= amount %>
@@ -105,8 +111,12 @@ body{
     <form action="<%= request.getContextPath() %>/TransactionServlet"
           method="post">
 
-        <input type="hidden" name="bookingId" value="<%= bookingId %>">
-        <input type="hidden" name="amount" value="<%= amount %>">
+<input type="hidden" name="roomId" value="<%= roomId %>">
+<input type="hidden" name="checkIn" value="<%= checkIn %>">
+<input type="hidden" name="checkOut" value="<%= checkOut %>">
+<input type="hidden" name="guests" value="<%= guests %>">
+<input type="hidden" name="offerId" value="<%= offerId %>">
+<input type="hidden" name="amount" value="<%= amount %>">
 
         <!-- CARD NUMBER -->
         <div class="mb-3">
@@ -154,10 +164,10 @@ body{
         <!-- BUTTONS -->
         <div class="d-flex justify-content-between mt-3">
 
-            <a href="<%= request.getContextPath() %>/RoomServlet?action=list"
-               class="btn btn-secondary btn-cancel">
-                Cancel
-            </a>
+            <a href="<%= request.getContextPath() %>/views/booking.jsp?roomId=<%= roomId %>"
+   class="btn btn-secondary btn-cancel">
+    Cancel
+</a>
 
             <button type="submit"
                     class="btn btn-confirm text-white">

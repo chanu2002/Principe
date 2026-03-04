@@ -12,6 +12,11 @@
 <%@ page import="model.User" %>
 <%@ page import="java.util.*" %>
 
+
+
+
+
+
 <%
     String roomId = request.getParameter("roomId");
 
@@ -47,6 +52,33 @@
     if (loggedUser != null) {
         hasReviewed = reviewDAO.hasUserReviewed(roomId, loggedUser.getUserId());
     }
+    
+    
+    
+    String checkInStr = (String) session.getAttribute("checkIn");
+    String checkOutStr = (String) session.getAttribute("checkOut");
+
+    java.math.BigDecimal calculatedTotal = room.getPrice();
+
+    if(checkInStr != null && checkOutStr != null){
+
+        java.time.LocalDate checkInDate =
+                java.time.LocalDate.parse(checkInStr);
+
+        java.time.LocalDate checkOutDate =
+                java.time.LocalDate.parse(checkOutStr);
+
+        long days = java.time.temporal.ChronoUnit.DAYS
+                .between(checkInDate, checkOutDate);
+
+        if(days > 0){
+            calculatedTotal =
+                room.getPrice().multiply(
+                    java.math.BigDecimal.valueOf(days)
+                );
+        }
+    }
+    
 %>
 
 <!DOCTYPE html>
@@ -59,15 +91,21 @@
         body{
     background:
         linear-gradient(
-            rgba(30,30,30,0.75),   /* Dark gray top */
-            rgba(30,30,30,0.75)    /* Dark gray bottom */
+            rgba(30,30,30,0.75),
+            rgba(30,30,30,0.75)
         ),
         url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85');
     background-size:cover;
     background-position:center;
     background-attachment:fixed;
     color:white;
-    
+    margin:0;
+    padding:0;
+}
+
+/* Push content below fixed header */
+.container{
+    padding-top:0px; /* 230px header + 20px spacing */
 }
 
         .glass-card{
@@ -288,7 +326,7 @@ if("NOT_AVAILABLE".equals(room.getAvailability())){
 
     <h4>
         Total Amount: $
-        <span id="totalDisplay"><%= room.getPrice() %></span>
+        <span id="totalDisplay"><%= calculatedTotal %></span>
     </h4>
 
     <button type="submit" class="btn btn-primary">
@@ -490,7 +528,7 @@ if (loggedUser == null) {
 
 <script>
 
-let basePrice = <%= room.getPrice() %>;
+let basePrice = <%= calculatedTotal %>;
 
 function calculateTotal(){
 

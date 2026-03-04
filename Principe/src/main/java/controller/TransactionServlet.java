@@ -2,13 +2,15 @@ package controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
 import dao.TransactionDAO;
 import dao.BookingDAO;
-import dao.RoomDAO;
 import model.User;
 import model.BookingDetail;
 import util.EmailUtil;
@@ -22,7 +24,6 @@ public class TransactionServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
-        // ✅ Check login
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
@@ -30,26 +31,50 @@ public class TransactionServlet extends HttpServlet {
 
         try {
 
-            // ==========================
-            // Get Parameters
-            // ==========================
-            String bookingIdStr = request.getParameter("bookingId");
+            String roomId = request.getParameter("roomId");
+            String checkInStr = request.getParameter("checkIn");
+            String checkOutStr = request.getParameter("checkOut");
+            String guestsStr = request.getParameter("guests");
+            String offerId = request.getParameter("offerId");
             String amountStr = request.getParameter("amount");
 
-            if (bookingIdStr == null || amountStr == null) {
+            if (roomId == null || amountStr == null) {
                 response.sendRedirect(request.getContextPath() + "/views/error.jsp");
                 return;
             }
 
-            int bookingId = Integer.parseInt(bookingIdStr);
             BigDecimal amount = new BigDecimal(amountStr);
+            int guests = Integer.parseInt(guestsStr);
 
-            // ==========================
-            // Insert Transaction
-            // ==========================
+            LocalDate checkIn = LocalDate.parse(checkInStr);
+            LocalDate checkOut = LocalDate.parse(checkOutStr);
+
+            BookingDAO bookingDAO = new BookingDAO();
+
+            BookingDetail booking = new BookingDetail();
+            booking.setUserId(user.getUserId());
+            booking.setRoomId(roomId);
+            booking.setCheckinDate(Date.from(
+                    checkIn.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            booking.setCheckoutDate(Date.from(
+                    checkOut.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            booking.setNoOfGuests(guests);
+            booking.setTotalAmount(amount);
+            booking.setStatus("CONFIRMED");
+            if (offerId == null || offerId.isBlank()) {
+                booking.setOfferId(null);
+            } else {
+                booking.setOfferId(offerId);
+            }
+
+            int bookingId = bookingDAO.insertBooking(booking);
+
+            if (bookingId <= 0) {
+                response.sendRedirect(request.getContextPath() + "/views/error.jsp");
+                return;
+            }
+
             TransactionDAO transactionDAO = new TransactionDAO();
-
-            // Short transaction id (safe for DB)
             String transactionId = "TXN" + System.currentTimeMillis();
 
             boolean transactionSuccess = transactionDAO.insertTransaction(
@@ -61,19 +86,6 @@ public class TransactionServlet extends HttpServlet {
 
             if (transactionSuccess) {
 
-                BookingDAO bookingDAO = new BookingDAO();
-
-                // 1️⃣ Update Booking Status to CONFIRMED
-                bookingDAO.updateStatus(bookingId, "CONFIRMED");
-
-                // 2️⃣ Get Booking Details
-                BookingDetail booking = bookingDAO.getBookingById(bookingId);
-
-               
-
-                // ==========================
-                // Send Email
-                // ==========================
                 String message =
                         "Payment Successful!\n\n" +
                         "Transaction ID: " + transactionId + "\n" +
@@ -87,7 +99,6 @@ public class TransactionServlet extends HttpServlet {
                         message
                 );
 
-                // Redirect to success page
                 response.sendRedirect(request.getContextPath() + "/views/success.jsp");
 
             } else {
@@ -96,7 +107,8 @@ public class TransactionServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/views/error.jsp");
+            response.sendRedirect(request.getContextPath()
+                    + "/views/error.jsp");
         }
     }
 }

@@ -16,11 +16,16 @@ body{
 /* ================= HEADER ================= */
 
 .top-header{
-    position:relative;
+   position: relative;        /* Make it fixed at top */
+    top: 0;                 /* Stick to top */
+    left: 0;
+    width: 100%;            /* Full width */
+    z-index: 9999;          /* On top of everything */
     background: url('${pageContext.request.contextPath}/views/images/header.jpg') center/cover no-repeat;
-    height:230px;
-    color:white;
-    animation:fadeIn 1.2s ease-in-out;
+    height: 230px;
+    color: white;
+    animation: fadeIn 1.2s ease-in-out;
+    transition: all 0.5s ease;
 }
 
 /* Dark Luxury Overlay */
@@ -129,7 +134,7 @@ body{
     justify-content:center;
     gap:35px;
     font-size:14px;
-    animation:fadeUp 1.8s ease;
+    flex-wrap:wrap;      /* ✅ allows items to move to next line */
 }
 
 .nav-menu a{
@@ -264,10 +269,24 @@ body{
     👤 <%= user.getName() %>
 </span>
 
-        <a href="${pageContext.request.contextPath}/LogoutServlet"
-           class="book-btn">
-           Logout
-        </a>
+<a href="${pageContext.request.contextPath}/views/UserPages/MyBookings.jsp"
+   class="book-btn">
+   Show My Bookings
+</a>
+
+<a href="${pageContext.request.contextPath}/LogoutServlet"
+   class="book-btn"
+   onclick="return confirmLogout()">
+   Logout
+</a>
+
+
+<script>
+function confirmLogout() {
+    return confirm("Are you sure you want to logout?");
+}
+</script>
+
 
 <%
     }
@@ -317,6 +336,7 @@ body{
             <a href="${pageContext.request.contextPath}/views/UserPages/Offers.jsp">OFFERS</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Gallery.jsp">GALLERY</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Esg.jsp">ESG</a>
+            
         </div>
 
     </div>
