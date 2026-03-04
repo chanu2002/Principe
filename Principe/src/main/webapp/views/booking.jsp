@@ -54,33 +54,144 @@
 <head>
     <title>Room Booking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+    background:
+        linear-gradient(
+            rgba(30,30,30,0.75),   /* Dark gray top */
+            rgba(30,30,30,0.75)    /* Dark gray bottom */
+        ),
+        url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:white;
+    
+}
+
+        .glass-card{
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 8px 32px rgba(0,0,0,0.4);
+            margin-bottom:30px;
+        }
+
+        .slider-container{
+            position:relative;
+            width:100%;
+            height:500px;
+            overflow:hidden;
+            border-radius:20px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .slide{
+            position:absolute;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            opacity:0;
+            transition:opacity 1s ease-in-out;
+        }
+
+        .slide.active{
+            opacity:1;
+        }
+
+        h2,h3,h4{
+            font-weight:600;
+        }
+
+        .btn-primary{
+            background:linear-gradient(45deg,#00c6ff,#0072ff);
+            border:none;
+        }
+
+        .btn-success{
+            background:linear-gradient(45deg,#56ab2f,#a8e063);
+            border:none;
+        }
+
+        .btn-warning{
+            border:none;
+        }
+
+        .btn-danger{
+            border:none;
+        }
+
+        a{
+            color:#00c6ff;
+            text-decoration:none;
+        }
+
+    </style>
 </head>
 
-<body class="container mt-4">
+<body>
 
-<h2>Room Details</h2>
+<jsp:include page="/views/designs/header.jsp" />
 
-<!-- Images -->
+<div class="container">
+
+<h2 class="mb-4 text-center">Room Details</h2>
+
+<!-- ================= IMAGE SLIDER ================= -->
+
+<div class="slider-container mb-5">
 <%
-if(images != null){
+if(images != null && !images.isEmpty()){
+    int index = 0;
     for(RoomImage img : images){
 %>
-    <img src="<%= request.getContextPath() %>/DisplayImageServlet?id=<%= img.getRoomImageId() %>"
-         width="200" height="150" class="me-2 mb-2">
+    <img class="slide <%= (index==0?"active":"") %>"
+         src="<%= request.getContextPath() %>/DisplayImageServlet?id=<%= img.getRoomImageId() %>">
 <%
+        index++;
     }
+} else {
+%>
+    <img class="slide active"
+         src="https://images.unsplash.com/photo-1566665797739-1674de7a421a">
+<%
 }
 %>
+</div>
 
-<hr>
+<!-- PREMIUM TYPE + DESCRIPTION -->
+<div class="text-center mb-4">
 
-<p><b>Type:</b> <%= room.getType() %></p>
-<p><b>Price per Day:</b> $<%= room.getPrice() %></p>
-<p><b>Description:</b> <%= room.getDescription() %></p>
-<p><b>Size:</b> <%= room.getSize() %></p>
+    <h3 style="
+        font-weight:700;
+        letter-spacing:1px;
+        margin-top:20px;
+    ">
+        <%= room.getType() %>
+    </h3>
 
-<hr>
+    <p style="
+        max-width:800px;
+        margin:15px auto 0 auto;
+        font-size:17px;
+        line-height:1.7;
+        color:rgba(255,255,255,0.85);
+    ">
+        <%= room.getDescription() %>
+    </p>
 
+</div>
+
+<!-- PRICE & SIZE -->
+<div class="glass-card text-center">
+    <h4>Price per Day: $<%= room.getPrice() %></h4>
+    <p>Size: <%= room.getSize() %></p>
+</div>
+<!-- ================= FACILITIES ================= -->
+
+<div class="glass-card">
 <h3>Facilities</h3>
 
 <%
@@ -107,8 +218,11 @@ if(roomFacilityIds != null && !roomFacilityIds.isEmpty()){
 }
 %>
 
-<hr>
+</div>
 
+<!-- ================= OFFERS ================= -->
+
+<div class="glass-card">
 <h3>Available Offers</h3>
 
 <form id="offerForm">
@@ -116,7 +230,7 @@ if(roomFacilityIds != null && !roomFacilityIds.isEmpty()){
 if(offers != null){
     for(Offer o : offers){
 %>
-<div class="form-check">
+<div class="form-check mb-2">
     <input class="form-check-input"
            type="radio"
            name="offer"
@@ -147,8 +261,11 @@ if(offers != null){
 </div>
 
 </form>
+</div>
 
-<hr>
+<!-- ================= BOOKING ================= -->
+
+<div class="glass-card">
 
 <%
 if("NOT_AVAILABLE".equals(room.getAvailability())){
@@ -184,41 +301,82 @@ if("NOT_AVAILABLE".equals(room.getAvailability())){
 }
 %>
 
-<hr>
+</div>
 
 <!-- ================= REVIEWS ================= -->
 
-<h3>Customer Reviews</h3>
+<div class="glass-card">
+
+<h3 class="mb-4">Customer Reviews</h3>
 
 <%
 if(reviews != null && !reviews.isEmpty()){
     for(Review r : reviews){
 %>
 
-<div class="card mb-3">
-    <div class="card-body">
+<div class="glass-card mb-3"
+     style="background:rgba(255,255,255,0.05); padding:20px;">
 
-        <!-- USER NAME ON TOP -->
-        <h5 class="card-title"><%= r.getCustomerName() %></h5>
-        <p>⭐ <%= r.getRating() %>/5</p>
-        <p><%= r.getComments() %></p>
+    <!-- USER NAME -->
+    <h5 style="margin-bottom:5px;">
+        <%= r.getCustomerName() %>
+    </h5>
 
-        <% if (loggedUser != null && loggedUser.getUserId() == r.getUserId()) { %>
+    <!-- RATING -->
+    <p style="margin-bottom:10px;">
+        ⭐ <%= r.getRating() %>/5
+    </p>
+
+    <!-- COMMENTS -->
+    <p style="color:rgba(255,255,255,0.85);">
+        <%= r.getComments() %>
+    </p>
+
+    <!-- UPDATE & DELETE (ONLY OWNER) -->
+    <%
+    if (loggedUser != null &&
+        loggedUser.getUserId() == r.getUserId()) {
+    %>
 
         <!-- UPDATE FORM -->
         <form action="<%= request.getContextPath() %>/ReviewServlet"
-              method="post" class="mb-2">
+              method="post"
+              class="mb-2">
 
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="roomId" value="<%= roomId %>">
-            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+            <input type="hidden" name="reviewId"
+                   value="<%= r.getReviewId() %>">
 
-            <select name="rating" class="form-control mb-2" required>
-                <option value="5" <%= r.getRating()==5?"selected":"" %>>5</option>
-                <option value="4" <%= r.getRating()==4?"selected":"" %>>4</option>
-                <option value="3" <%= r.getRating()==3?"selected":"" %>>3</option>
-                <option value="2" <%= r.getRating()==2?"selected":"" %>>2</option>
-                <option value="1" <%= r.getRating()==1?"selected":"" %>>1</option>
+            <select name="rating"
+                    class="form-control mb-2"
+                    required>
+
+                <option value="5"
+                    <%= r.getRating()==5?"selected":"" %>>
+                    5 - Excellent
+                </option>
+
+                <option value="4"
+                    <%= r.getRating()==4?"selected":"" %>>
+                    4 - Very Good
+                </option>
+
+                <option value="3"
+                    <%= r.getRating()==3?"selected":"" %>>
+                    3 - Good
+                </option>
+
+                <option value="2"
+                    <%= r.getRating()==2?"selected":"" %>>
+                    2 - Average
+                </option>
+
+                <option value="1"
+                    <%= r.getRating()==1?"selected":"" %>>
+                    1 - Poor
+                </option>
+
             </select>
 
             <textarea name="comments"
@@ -229,6 +387,7 @@ if(reviews != null && !reviews.isEmpty()){
                     class="btn btn-warning btn-sm">
                 Update
             </button>
+
         </form>
 
         <!-- DELETE FORM -->
@@ -237,40 +396,52 @@ if(reviews != null && !reviews.isEmpty()){
 
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="roomId" value="<%= roomId %>">
-            <input type="hidden" name="reviewId" value="<%= r.getReviewId() %>">
+            <input type="hidden" name="reviewId"
+                   value="<%= r.getReviewId() %>">
 
             <button type="submit"
                     class="btn btn-danger btn-sm">
                 Delete
             </button>
+
         </form>
 
-        <% } %>
+    <%
+    }
+    %>
 
-    </div>
 </div>
 
 <%
     }
 } else {
 %>
+
 <p>No reviews yet.</p>
+
 <%
 }
 %>
 
-<!-- ADD REVIEW (ONLY IF NOT REVIEWED) -->
+<!-- ================= ADD REVIEW ================= -->
 
-<% if (loggedUser == null) { %>
+<%
+if (loggedUser == null) {
+%>
 
 <p class="text-danger">
-    Please <a href="<%= request.getContextPath() %>/views/login.jsp">
-    login</a> to add a review.
+    Please
+    <a href="<%= request.getContextPath() %>/views/login.jsp">
+        login
+    </a>
+    to add a review.
 </p>
 
-<% } else if (!hasReviewed) { %>
+<%
+} else if (!hasReviewed) {
+%>
 
-<h4>Add Your Review</h4>
+<h4 class="mt-4">Add Your Review</h4>
 
 <form action="<%= request.getContextPath() %>/ReviewServlet"
       method="post">
@@ -280,13 +451,17 @@ if(reviews != null && !reviews.isEmpty()){
 
     <div class="mb-2">
         <label>Rating</label>
-        <select name="rating" class="form-control" required>
+        <select name="rating"
+                class="form-control"
+                required>
+
             <option value="">Select</option>
             <option value="5">5 - Excellent</option>
             <option value="4">4 - Very Good</option>
             <option value="3">3 - Good</option>
             <option value="2">2 - Average</option>
             <option value="1">1 - Poor</option>
+
         </select>
     </div>
 
@@ -304,13 +479,14 @@ if(reviews != null && !reviews.isEmpty()){
 
 </form>
 
-<% } %>
+<%
+}
+%>
 
-<br>
+</div>
 
-<a href="<%= request.getContextPath() %>/RoomServlet?action=list">
-    Back
-</a>
+
+<!-- ================= SCRIPTS ================= -->
 
 <script>
 
@@ -343,6 +519,25 @@ function calculateTotal(){
 
     document.getElementById("finalAmount").value =
         total.toFixed(2);
+}
+
+/* IMAGE SLIDER AUTO TRANSITION */
+
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+
+if(slides.length > 1){
+
+    setInterval(() => {
+
+        slides[current].classList.remove("active");
+
+        current = (current + 1) % slides.length;
+
+        slides[current].classList.add("active");
+
+    }, 4000);
+
 }
 
 </script>

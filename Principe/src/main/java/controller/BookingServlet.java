@@ -122,6 +122,8 @@ if (bookingId > 0) {
           + totalAmount);
 }
 
+
+
 } catch (Exception e) {
 e.printStackTrace();
 response.sendRedirect(request.getContextPath()
