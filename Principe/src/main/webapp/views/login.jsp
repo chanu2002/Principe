@@ -33,7 +33,7 @@ body{
 
 /* ===== HEADER ===== */
 .top-header{
-    position: fixed;       /* Always on top */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -179,7 +179,7 @@ body{
     text-align:center;
     color:white;
     animation:fadeIn 1s ease;
-    margin: 50px auto 0 auto; /* push below fixed header */
+    margin: 50px auto 0 auto;
 }
 
 .login-container h2{
@@ -246,13 +246,11 @@ body{
     color:#ff6b6b;
 }
 
-/* ===== ANIMATION ===== */
 @keyframes fadeIn{
     from{opacity:0; transform:translateY(30px);}
     to{opacity:1; transform:translateY(0);}
 }
 
-/* ===== RESPONSIVE ===== */
 @media(max-width:420px){
     .login-container{
         width:90%;
@@ -298,6 +296,89 @@ Don't have an account?
 <% } %>
 
 </div>
+
+
+<!-- ===== SUCCESS POPUP ===== -->
+
+<%
+String success = request.getParameter("success");
+if("1".equals(success)){
+%>
+
+<style>
+
+.blur-bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(8px);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.popup-box{
+background:white;
+padding:30px;
+border-radius:12px;
+text-align:center;
+width:320px;
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+animation:popup 0.4s ease;
+}
+
+.popup-box h3{
+color:#28a745;
+margin-bottom:15px;
+}
+
+.popup-box button{
+background:#d4af37;
+border:none;
+padding:10px 25px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.popup-box button:hover{
+background:#b9972f;
+}
+
+@keyframes popup{
+from{transform:scale(0.7);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+</style>
+
+<div class="blur-bg">
+
+<div class="popup-box">
+
+<h3>Login Successful</h3>
+
+<p>Welcome to Ocean View Resort</p>
+
+<button onclick="goDashboard()">OK</button>
+
+</div>
+
+</div>
+
+<script>
+function goDashboard(){
+window.location.href="<%=request.getContextPath()%>/views/userDashboard.jsp";
+}
+</script>
+
+<%
+}
+%>
 
 </body>
 </html>

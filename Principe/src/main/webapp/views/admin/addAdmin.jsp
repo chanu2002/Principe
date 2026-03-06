@@ -1,3 +1,5 @@
+<%@ page import="model.User" %>
+
 <form action="<%=request.getContextPath()%>/AdminServlet"
       method="post"
       enctype="multipart/form-data">
@@ -102,6 +104,50 @@
             background: #5a6268;
         }
 
+        /* POPUP STYLE */
+
+        .popup-overlay{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.6);
+            backdrop-filter:blur(6px);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+
+        .popup-box{
+            background:white;
+            color:#333;
+            padding:35px;
+            border-radius:15px;
+            text-align:center;
+            width:320px;
+            box-shadow:0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .popup-box h3{
+            margin-bottom:20px;
+            color:#28a745;
+        }
+
+        .popup-box button{
+            padding:10px 25px;
+            border:none;
+            background:#d4af37;
+            color:white;
+            border-radius:20px;
+            cursor:pointer;
+        }
+
+        .popup-box button:hover{
+            background:#b9972f;
+        }
+
     </style>
 </head>
 
@@ -144,6 +190,27 @@
     </div>
 
 </div>
+
+
+<!-- SUCCESS POPUP -->
+
+<%
+String success = request.getParameter("success");
+if("1".equals(success)){
+%>
+
+<div class="popup-overlay">
+    <div class="popup-box">
+        <h3>Admin Added Successfully</h3>
+        <button onclick="window.location.href='listAdmins.jsp'">
+            OK
+        </button>
+    </div>
+</div>
+
+<%
+}
+%>
 
 </body>
 </html>

@@ -173,15 +173,24 @@ body{
 
 <!-- SUCCESS ALERT & REDIRECT -->
 <%
-    String success = request.getParameter("success");
-    if("1".equals(success)){
+String success = request.getParameter("success");
+
+if("1".equals(success)){
 %>
+
 <script>
-    alert("Registered Successfully!");
-    window.location.href = "<%=request.getContextPath()%>/index.jsp";
-</script>
-<%
+function showSuccessMessage() {
+    if(confirm("User Registration Successful!\n\nClick OK to continue.")) {
+        window.location.href = "<%=request.getContextPath()%>/index.jsp";
     }
+}
+
+// Show message when page loads
+window.onload = showSuccessMessage;
+</script>
+
+<%
+}
 %>
 
 </body>

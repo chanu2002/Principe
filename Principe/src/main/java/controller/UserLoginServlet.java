@@ -21,7 +21,7 @@ public class UserLoginServlet extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("views/userDashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=1");
         } else {
             response.sendRedirect("views/login.jsp?error=1");
         }

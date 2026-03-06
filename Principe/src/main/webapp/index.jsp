@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Principe Grand Colombo</title>
+    <title>Ocean View Resort Galle</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -66,6 +66,56 @@
         footer a{color:#ffd700;text-decoration:none;margin:0 10px;}
         footer a:hover{color:white;}
         @media (max-width:768px){.image-row,.amenities-row{flex-direction:column;align-items:center;}}
+        
+        
+        /* Ocean View Background Section */
+.ocean-view-section{
+    background: linear-gradient(rgba(120,120,120,0.75), rgba(120,120,120,0.75)),
+    url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color:white;
+}
+
+.ocean-view-section h2{
+    color:white;
+}
+
+.ocean-view-section p{
+    color:#f0f0f0;
+}
+
+
+/* Fine Dining Background */
+.dining-bg{
+    background: linear-gradient(rgba(120,120,120,0.75), rgba(120,120,120,0.75)),
+    url('https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color:white;
+}
+
+.dining-bg h2{
+    color:white;
+}
+
+.dining-bg p{
+    color:#f0f0f0;
+}
+
+
+/* Rooms Background */
+.rooms-bg{
+    background: linear-gradient(rgba(120,120,120,0.75), rgba(120,120,120,0.75)),
+    url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color:white;
+}
+
+.rooms-bg h2{
+    color:white;
+}
+
+.rooms-bg p{
+    color:#f0f0f0;
+}
+        
+        
     </style>
 </head>
 <body>
@@ -74,7 +124,7 @@
 <div class="top-header">
     <div class="overlay">
         <div class="header-top-row">
-            <div><strong>PRINCIPE</strong></div>
+            <div><strong>OCEAN VIEW</strong></div>
             <div>
                 <a href="views/adminLogin.jsp">Admin Login</a>
                 <a href="views/register.jsp">Register</a>
@@ -82,8 +132,8 @@
             </div>
         </div>
         <div class="brand-center">
-            <h1>Principe</h1>
-            <span>GRAND COLOMBO</span>
+            <h1>OCEAN VIEW</h1>
+            <span>RESORT GALLE</span>
         </div>
         <div class="nav-menu">
             <a href="views/UserPages/RoomsSuite.jsp">ROOMS & SUITES</a>
@@ -92,20 +142,48 @@
             <a href="views/UserPages/Offers.jsp">OFFERS</a>
             <a href="views/UserPages/Gallery.jsp">GALLERY</a>
             <a href="views/UserPages/Esg.jsp">ESG</a>
+            <a href="views/UserPages/Contact.jsp">CONTACT US</a>
         </div>
     </div>
 </div>
 
 <!-- Welcome Section -->
 <div class="section">
-    <h2>Welcome to Principe Grand Colombo</h2>
-    <p>Experience luxury, comfort, and world-class hospitality in the heart of Colombo.
-       Principe Grand Colombo offers premium rooms, fine dining, relaxing spa treatments,
+    <h2>Welcome to Ocean View Resort</h2>
+    <p>Experience luxury, comfort, and world-class hospitality in the heart of Galle.
+       Ocean View Resort offers stunning beach  views, premium rooms, fine dining, relaxing spa treatments,
        and breathtaking city views designed to create unforgettable memories.</p>
 </div>
 
+<!-- Stunning Ocean Views -->
+<div class="section ocean-view-section">
+    <h2>Stunning Ocean Views</h2>
+    <p>
+        Wake up to breathtaking views of the Indian Ocean at Ocean View Resort Galle.
+        Enjoy golden sunsets, soothing sea breezes, and panoramic beachfront scenery
+        that creates a truly unforgettable tropical escape.
+    </p>
+
+    <div class="image-row">
+        <div class="image-card">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Ocean Sunset">
+            <h3>Golden Ocean Sunset</h3>
+        </div>
+
+        <div class="image-card">
+            <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80" alt="Beach View">
+            <h3>Beachfront Paradise</h3>
+        </div>
+
+        <div class="image-card">
+            <img src="https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=800&q=80" alt="Ocean Waves">
+            <h3>Endless Ocean Horizon</h3>
+        </div>
+    </div>
+</div>
+
 <!-- Rooms & Suites -->
-<div class="section">
+<div class="section rooms-bg">
     <h2>Our Luxury Rooms & Suites</h2>
     <div class="image-row">
         <div class="image-card">
@@ -124,7 +202,7 @@
 </div>
 
 <!-- Dining -->
-<div class="section" style="background:#ffffff;">
+<div class="section dining-bg">
     <h2>Fine Dining Experience</h2>
     <p>Enjoy international cuisine prepared by award-winning chefs.
        From romantic dinners to family gatherings, our restaurants provide
@@ -143,8 +221,8 @@
 
 <!-- About Us -->
 <div class="section" style="background:#f5f5f5;">
-    <h2>About Principe Grand Colombo</h2>
-    <p>Principe Grand Colombo has been the benchmark for luxury hospitality in Sri Lanka, blending modern elegance with rich cultural heritage.
+    <h2>About Ocean View Resort</h2>
+    <p>Ocean View Resort has been the benchmark for luxury hospitality in Sri Lanka, blending modern elegance with rich cultural heritage.
        Our mission is to provide personalized experiences for every guest, from business travelers to families seeking leisure.</p>
 </div>
 
@@ -237,11 +315,11 @@
 
 <!-- Footer -->
 <footer>
-    <p>&copy; 2026 Principe Grand Colombo. All Rights Reserved.</p>
+    <p>&copy; 2026 Ocean View Resort. All Rights Reserved.</p>
     <p>
         <a href="#">Privacy Policy</a> | 
         <a href="#">Terms of Service</a> | 
-        <a href="#">Contact Us</a>
+        <a href="${pageContext.request.contextPath}/views/UserPages/Contact.jsp">CONTACT US</a>
     </p>
     <p>Follow Us:
         <a href="#"><i class="fab fa-facebook-f"></i></a>

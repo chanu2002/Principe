@@ -26,7 +26,7 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
                         url('https://images.unsplash.com/photo-1560347876-aeef00ee58a1');
             background-size: cover;
             background-position: center;
@@ -113,7 +113,6 @@
         a.btn:hover {
             background: #5a6268;
         }
-
     </style>
 </head>
 
@@ -131,10 +130,10 @@
             <input type="hidden" name="facilityId" value="<%=facility.getFacilityId()%>">
 
             <label>Facility Name</label>
-            <input type="text" name="facilityName" value="<%=facility.getFacilityName()%>" required>
+            <input type="text" name="facilityName" value="<%=facility.getFacilityName()%>" placeholder="Enter facility name" required>
 
             <label>Description</label>
-            <textarea name="description" required><%=facility.getDescription()%></textarea>
+            <textarea name="description" placeholder="Enter description" required><%=facility.getDescription()%></textarea>
 
             <button type="submit">Update Facility</button>
             <a href="listFacility.jsp" class="btn">Back</a>

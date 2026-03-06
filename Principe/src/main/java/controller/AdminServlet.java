@@ -53,8 +53,7 @@ response.sendRedirect("views/admin/listAdmins.jsp");
 
             dao.insert(admin);
 
-            response.sendRedirect(request.getContextPath()
-                    + "/views/admin/listAdmins.jsp");
+            response.sendRedirect(request.getContextPath() + "/views/admin/addAdmin.jsp?success=1");
             
             
         } else if ("update".equals(action)) {

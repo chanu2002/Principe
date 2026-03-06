@@ -234,7 +234,7 @@ body{
 
         <div class="header-top-row">
             <div>
-                <strong>PRINCIPE</strong>
+                <strong>OCEAN VIEW</strong>
             </div>
 
            <div>
@@ -295,8 +295,8 @@ function confirmLogout() {
         </div>
 
         <div class="brand-center">
-            <h1>Principe</h1>
-            <span>GRAND COLOMBO</span>
+            <h1>OCEAN VIEW</h1>
+            <span>RESORT GALLE</span>
         </div>
 
         <div class="nav-menu">
@@ -305,7 +305,7 @@ function confirmLogout() {
     if(userr == null){
 %>
 
-    <a href="${pageContext.request.contextPath}/index.jsp">Home</a>
+    <a href="${pageContext.request.contextPath}/index.jsp">HOME</a>
 
 <%
     }
@@ -336,6 +336,7 @@ function confirmLogout() {
             <a href="${pageContext.request.contextPath}/views/UserPages/Offers.jsp">OFFERS</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Gallery.jsp">GALLERY</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Esg.jsp">ESG</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/help.jsp">HELP</a>
             
         </div>
 

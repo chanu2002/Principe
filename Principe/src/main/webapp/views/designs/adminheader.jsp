@@ -128,7 +128,7 @@ body{
 
     <!-- LEFT -->
     <div class="admin-title">
-        PRINCIPE
+        OCEAN VIEW
     </div>
 
     <!-- CENTER MENU -->

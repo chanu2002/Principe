@@ -23,7 +23,9 @@ public class UserRegisterServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
 
         if (dao.insert(user)) {
-            response.sendRedirect("views/login.jsp");
+        	// After saving user successfully in database
+        	response.sendRedirect(request.getContextPath() 
+        	        + "/views/register.jsp?success=1");
         } else {
             response.sendRedirect("views/register.jsp?error=1");
         }
