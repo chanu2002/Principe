@@ -180,25 +180,5 @@ body{
 
 </div>
 
-
-<!-- SUCCESS MESSAGE -->
-
-<%
-String success = request.getParameter("success");
-if("1".equals(success)){
-%>
-
-<script>
-
-alert("Payment Successful!");
-
-window.location.href = "<%=request.getContextPath()%>/index.jsp";
-
-</script>
-
-<%
-}
-%>
-
 </body>
 </html>
