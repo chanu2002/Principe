@@ -16,23 +16,30 @@ body{
 /* ================= HEADER ================= */
 
 .top-header{
-   position: relative;        /* Make it fixed at top */
-    top: 0;                 /* Stick to top */
-    left: 0;
-    width: 100%;            /* Full width */
-    z-index: 9999;          /* On top of everything */
-    background: url('${pageContext.request.contextPath}/views/images/header.jpg') center/cover no-repeat;
-    height: 230px;
-    color: white;
-    animation: fadeIn 1.2s ease-in-out;
-    transition: all 0.5s ease;
+    position:relative;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:9999;
+
+    background:url('${pageContext.request.contextPath}/views/images/header.jpg') center/cover no-repeat;
+
+    height:230px;
+    color:white;
+
+    animation:fadeIn 1.2s ease-in-out;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.6);
 }
 
-/* Dark Luxury Overlay */
+/* Dark luxury overlay */
+
 .overlay{
-    background:linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.55));
+    background:linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.55));
     height:100%;
-    padding:25px 80px;
+
+    padding:25px 90px;
+
     display:flex;
     flex-direction:column;
     justify-content:space-between;
@@ -45,32 +52,51 @@ body{
     justify-content:space-between;
     align-items:center;
     font-size:14px;
-    animation:slideDown 1s ease;
 }
+
+/* Left title */
 
 .header-top-row strong{
     font-size:18px;
-    letter-spacing:2px;
+    letter-spacing:3px;
+    font-weight:600;
 }
 
-/* Glass effect box */
+/* Glass login box */
+
 .header-top-row div:last-child{
-    backdrop-filter:blur(8px);
-    background:rgba(255,255,255,0.06);
-    padding:8px 18px;
-    border-radius:30px;
+
+    backdrop-filter:blur(12px);
+
+    background:rgba(255,255,255,0.08);
+
+    padding:8px 22px;
+
+    border-radius:40px;
+
+    border:1px solid rgba(255,255,255,0.15);
+
 }
+
+/* Links */
 
 .header-top-row a{
+
     color:white;
+
     text-decoration:none;
-    margin-left:20px;
+
+    margin-left:18px;
+
     font-weight:500;
+
     position:relative;
+
     transition:0.3s;
 }
 
 /* Animated underline */
+
 .header-top-row a::after{
     content:"";
     position:absolute;
@@ -91,71 +117,123 @@ body{
 }
 
 /* BOOK BUTTON */
+
 .book-btn{
-    background:linear-gradient(45deg,#ffd700,#e6c200);
+
+    background:linear-gradient(45deg,#ffd700,#f2c200);
+
     color:black !important;
-    padding:8px 18px;
+
+    padding:9px 20px;
+
     border-radius:30px;
+
     font-weight:600;
-    transition:0.3s ease;
+
+    transition:0.35s;
+
 }
 
 .book-btn:hover{
+
     transform:translateY(-3px);
-    box-shadow:0 8px 20px rgba(255,215,0,0.4);
+
+    box-shadow:0 10px 25px rgba(255,215,0,0.45);
+
 }
 
 /* ================= BRAND CENTER ================= */
 
 .brand-center{
+
     text-align:center;
-    animation:fadeUp 1.5s ease;
+
+    animation:fadeUp 1.3s ease;
 }
 
 .brand-center h1{
+
     font-family:'Playfair Display', serif;
-    font-size:42px;
-    letter-spacing:4px;
+
+    font-size:46px;
+
+    letter-spacing:5px;
+
     background:linear-gradient(to right,#ffd700,#fff,#ffd700);
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
+
 }
 
 .brand-center span{
+
     font-size:18px;
+
     letter-spacing:3px;
+
     color:#f5e6c8;
+
 }
 
 /* ================= NAVIGATION ================= */
 
 .nav-menu{
+
     display:flex;
+
     justify-content:center;
-    gap:35px;
+
+    gap:38px;
+
     font-size:14px;
-    flex-wrap:wrap;      /* ✅ allows items to move to next line */
+
+    flex-wrap:wrap;
+
+    padding:10px 0;
+
 }
 
+/* Menu items */
+
 .nav-menu a{
+
     color:white;
+
     text-decoration:none;
+
     font-weight:500;
+
+    letter-spacing:1px;
+
     position:relative;
-    padding-bottom:5px;
+
+    padding-bottom:6px;
+
     transition:0.3s;
+
 }
 
 /* Smooth underline */
+
 .nav-menu a::after{
+
     content:"";
+
     position:absolute;
+
     width:0%;
+
     height:2px;
+
     bottom:0;
+
     left:0;
+
     background:#ffd700;
-    transition:0.4s ease;
+
+    transition:0.35s;
+
 }
 
 .nav-menu a:hover::after{
@@ -169,37 +247,47 @@ body{
 /* ================= ANIMATIONS ================= */
 
 @keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
-}
 
-@keyframes slideDown{
-    from{transform:translateY(-30px); opacity:0;}
-    to{transform:translateY(0); opacity:1;}
+    from{opacity:0;}
+
+    to{opacity:1;}
+
 }
 
 @keyframes fadeUp{
-    from{transform:translateY(30px); opacity:0;}
-    to{transform:translateY(0); opacity:1;}
+
+    from{
+        transform:translateY(30px);
+        opacity:0;
+    }
+
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media screen and (max-width:992px){
+
     .overlay{
         padding:20px 40px;
     }
 
     .brand-center h1{
-        font-size:34px;
+        font-size:36px;
     }
 
     .nav-menu{
-        gap:20px;
+        gap:22px;
     }
+
 }
 
 @media screen and (max-width:768px){
+
     .top-header{
         height:auto;
     }
@@ -216,7 +304,7 @@ body{
 
     .nav-menu{
         flex-direction:column;
-        gap:12px;
+        gap:14px;
     }
 
     .brand-center h1{
@@ -226,7 +314,9 @@ body{
     .brand-center span{
         font-size:15px;
     }
+
 }
+
 </style>
 
 <div class="top-header">
@@ -261,13 +351,9 @@ body{
     } else {
 %>
 
-        <span style="
-    color:#ffd700;
-    font-weight:600;
-    margin-right:15px;
-">
-    👤 <%= user.getName() %>
-</span>
+        <span style="color:#ffd700;font-weight:600;margin-right:15px;">
+            👤 <%= user.getName() %>
+        </span>
 
 <a href="${pageContext.request.contextPath}/views/UserPages/MyBookings.jsp"
    class="book-btn">
@@ -280,13 +366,11 @@ body{
    Logout
 </a>
 
-
 <script>
 function confirmLogout() {
     return confirm("Are you sure you want to logout?");
 }
 </script>
-
 
 <%
     }
@@ -300,7 +384,8 @@ function confirmLogout() {
         </div>
 
         <div class="nav-menu">
-         	<%
+
+<%
     model.User userr = (model.User) session.getAttribute("user");
     if(userr == null){
 %>
@@ -329,7 +414,6 @@ function confirmLogout() {
     }
 %>
 
-
             <a href="${pageContext.request.contextPath}/views/UserPages/RoomsSuite.jsp">ROOMS & SUITES</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Dining.jsp">DINING</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Experience.jsp">EXPERIENCES</a>
@@ -337,7 +421,7 @@ function confirmLogout() {
             <a href="${pageContext.request.contextPath}/views/UserPages/Gallery.jsp">GALLERY</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Esg.jsp">ESG</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/help.jsp">HELP</a>
-            
+
         </div>
 
     </div>

@@ -32,22 +32,23 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
-/* Background */
+/* ===== NEW BACKGROUND ===== */
 
 body{
 
 min-height:100vh;
 
 background:
-linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
-url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb");
+linear-gradient(rgba(10,25,55,0.75),rgba(10,25,55,0.85)),
+url("https://images.unsplash.com/photo-1501117716987-c8e1ecb210c1");
 
 background-size:cover;
 background-position:center;
+background-attachment:fixed;
 
 }
 
-/* Center Wrapper */
+/* ===== CENTER WRAPPER ===== */
 
 .dashboard-wrapper{
 
@@ -57,23 +58,27 @@ align-items:center;
 
 height:calc(100vh - 80px);
 
+padding:20px;
+
 }
 
-/* Dashboard Card */
+/* ===== DASHBOARD CARD ===== */
 
 .dashboard{
 
-width:700px;
+width:720px;
 
-padding:40px;
+padding:45px;
 
-background:rgba(255,255,255,0.12);
+background:rgba(255,255,255,0.08);
 
-border-radius:20px;
+border-radius:25px;
 
-backdrop-filter:blur(15px);
+backdrop-filter:blur(18px);
 
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
+border:1px solid rgba(255,255,255,0.15);
+
+box-shadow:0 25px 70px rgba(0,0,0,0.6);
 
 text-align:center;
 
@@ -83,19 +88,21 @@ animation:fadeIn 1s ease;
 
 }
 
-/* Title */
+/* ===== TITLE ===== */
 
 .dashboard h2{
 
-margin-bottom:30px;
+margin-bottom:35px;
 
 font-weight:600;
 
 letter-spacing:1px;
 
+color:#e6f1ff;
+
 }
 
-/* Menu Grid */
+/* ===== MENU GRID ===== */
 
 .menu{
 
@@ -103,65 +110,77 @@ display:grid;
 
 grid-template-columns:1fr 1fr;
 
-gap:20px;
+gap:22px;
 
 }
 
-/* Menu Buttons */
+/* ===== MENU BUTTONS ===== */
 
 .menu a{
 
 display:flex;
 
 align-items:center;
-
 justify-content:center;
-
 gap:10px;
 
-padding:15px;
+padding:16px;
 
-background:#d4af37;
+background:linear-gradient(135deg,#1e90ff,#5dade2);
 
 color:white;
 
 text-decoration:none;
 
-border-radius:10px;
+border-radius:12px;
 
 font-weight:500;
+
+font-size:15px;
 
 transition:0.3s;
 
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
+
 }
+
+.menu a i{
+font-size:16px;
+}
+
+/* Hover */
 
 .menu a:hover{
 
-background:#b9972f;
+background:linear-gradient(135deg,#3498db,#85c1e9);
 
-transform:scale(1.05);
+transform:translateY(-4px);
+
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
 
 }
 
-/* Logout Button */
+/* ===== LOGOUT BUTTON ===== */
 
 .logout{
 
-margin-top:25px;
+margin-top:30px;
 
 display:inline-block;
 
-padding:12px 25px;
+padding:13px 28px;
 
-background:#e74c3c;
+background:linear-gradient(135deg,#ff4b2b,#ff416c);
 
-border-radius:8px;
+border-radius:10px;
 
 color:white;
 
 text-decoration:none;
 
 font-weight:500;
+
+letter-spacing:0.5px;
 
 transition:0.3s;
 
@@ -169,19 +188,19 @@ transition:0.3s;
 
 .logout:hover{
 
-background:#c0392b;
+transform:translateY(-3px);
 
-transform:scale(1.05);
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
 
 }
 
-/* Animation */
+/* ===== ANIMATION ===== */
 
 @keyframes fadeIn{
 
 from{
 opacity:0;
-transform:translateY(30px);
+transform:translateY(40px);
 }
 
 to{
@@ -191,7 +210,7 @@ transform:translateY(0);
 
 }
 
-/* Mobile */
+/* ===== MOBILE ===== */
 
 @media(max-width:600px){
 
@@ -200,7 +219,8 @@ grid-template-columns:1fr;
 }
 
 .dashboard{
-width:90%;
+width:95%;
+padding:35px;
 }
 
 }
