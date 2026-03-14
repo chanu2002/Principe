@@ -99,7 +99,7 @@ public class TransactionServlet extends HttpServlet {
                         message
                 );
 
-                response.sendRedirect(request.getContextPath() + "/views/success.jsp");
+                response.sendRedirect(request.getContextPath() + "/views/UserPages/MyBookings.jsp");
 
             } else {
                 response.sendRedirect(request.getContextPath() + "/views/error.jsp");
