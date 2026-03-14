@@ -420,7 +420,7 @@ function confirmLogout() {
             <a href="${pageContext.request.contextPath}/views/UserPages/Offers.jsp">OFFERS</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Gallery.jsp">GALLERY</a>
             <a href="${pageContext.request.contextPath}/views/UserPages/Esg.jsp">ESG</a>
-            <a href="${pageContext.request.contextPath}/views/UserPages/help.jsp">HELP</a>
+            <a href="${pageContext.request.contextPath}/views/UserPages/Contact.jsp">CONTACT US</a>
 
         </div>
 
