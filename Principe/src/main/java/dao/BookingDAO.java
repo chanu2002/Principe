@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.BookingDetail;
+import model.DailyBooking;
+import model.DailyIncome;
 import util.DBConnection;
 
 public class BookingDAO {
@@ -261,5 +263,54 @@ public class BookingDAO {
 
         return list;
     }
+    
+ // Get daily income (sum of total_amount grouped by booking_date)
+    public List<DailyIncome> getDailyIncome() {
+        List<DailyIncome> list = new ArrayList<>();
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT DATE(booking_date) AS bdate, SUM(total_amount) AS income " +
+                         "FROM booking_detail " +
+                         "GROUP BY DATE(booking_date) " +
+                         "ORDER BY DATE(booking_date) DESC";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                DailyIncome d = new DailyIncome();
+                d.setBookingDate(rs.getDate("bdate"));
+                d.setIncome(rs.getBigDecimal("income"));
+                list.add(d);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+ // Returns list of dates and number of bookings per date
+    public List<DailyBooking> getDailyBookingCount() {
+        List<DailyBooking> list = new ArrayList<>();
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT DATE(booking_date) AS bdate, COUNT(*) AS total_bookings " +
+                         "FROM booking_detail " +
+                         "GROUP BY DATE(booking_date) " +
+                         "ORDER BY DATE(booking_date) DESC";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                DailyBooking d = new DailyBooking();
+                d.setBookingDate(rs.getDate("bdate"));
+                d.setBookingCount(rs.getInt("total_bookings"));
+                list.add(d);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
 }
 

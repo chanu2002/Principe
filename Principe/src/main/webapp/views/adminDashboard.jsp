@@ -190,11 +190,16 @@ window.onpopstate = function () {
             <a href="admin/listAdmins.jsp">
                 <i class="fa fa-user-shield"></i> View Admin
             </a>
+            
+             <a href="admin/allusers.jsp">
+                <i class="fa fa-users"></i> View Users
+            </a>
+            <a href="admin/Stats.jsp">
+                <i class="fa fa-users"></i> Statistics
+            </a>
         </div>
 
-        <a class="logout" href="<%= request.getContextPath() %>/LogoutServlet">
-            <i class="fa fa-sign-out-alt"></i> Logout
-        </a>
+       
     </div>
 </div>
 

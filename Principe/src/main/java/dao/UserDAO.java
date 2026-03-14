@@ -90,4 +90,47 @@ public class UserDAO {
 
         return list;
     }
+    
+    public boolean delete(int userId) {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "DELETE FROM user WHERE user_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public List<User> getAlls() {
+        List<User> list = new ArrayList<>();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT * FROM user";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                User u = new User();
+                u.setUserId(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setName(rs.getString("name"));
+                u.setEmail(rs.getString("email"));
+                u.setTelNo(rs.getString("tel_no"));
+                u.setAddress(rs.getString("address"));
+                u.setRole(rs.getString("role"));
+                list.add(u);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+
 }
