@@ -114,11 +114,35 @@ java.math.BigDecimal roomPrice =
         input[type="submit"]:hover {
             background: #218838;
         }
+        
+        .back-btn-top {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #d4af37;
+    color: #222;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.back-btn-top:hover {
+    background: #b5942e;
+    transform: translateY(-2px);
+}
+        
 
     </style>
 </head>
 
 <body>
+
+<a href="<%= request.getContextPath() %>/AdminBookingServlet?action=list" class="back-btn-top">&larr; Back to Dashboard</a>
+
 
 <div class="container">
 

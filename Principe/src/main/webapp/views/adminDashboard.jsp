@@ -195,7 +195,7 @@ window.onpopstate = function () {
                 <i class="fa fa-users"></i> View Users
             </a>
             <a href="admin/Stats.jsp">
-                <i class="fa fa-users"></i> Statistics
+                <i class="fa fa-chart-bar"></i> Statistics
             </a>
         </div>
 
