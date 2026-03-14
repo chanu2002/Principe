@@ -98,9 +98,13 @@ public class TransactionServlet extends HttpServlet {
                         "Booking Confirmation",
                         message
                 );
+                
+                // Save details in session to pass to bill.jsp
+                session.setAttribute("bookingDetail", booking);
+                session.setAttribute("transactionId", transactionId);
+                session.setAttribute("amountPaid", amount);
 
-                response.sendRedirect(request.getContextPath() + "/views/UserPages/MyBookings.jsp");
-
+                response.sendRedirect(request.getContextPath() + "/views/UserPages/bill.jsp");
             } else {
                 response.sendRedirect(request.getContextPath() + "/views/error.jsp");
             }
