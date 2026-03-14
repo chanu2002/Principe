@@ -6,7 +6,8 @@ import jakarta.mail.internet.*;
 
 public class EmailUtil {
 
-    public static void sendBill(String toEmail, String subject, String body) {
+    // Add a parameter to indicate HTML content
+    public static void sendBill(String toEmail, String subject, String body, boolean isHtml) {
 
         final String fromEmail = "chandrabanuherath04@gmail.com";
         final String password = "fhgi ouke afva cjgu";
@@ -24,13 +25,17 @@ public class EmailUtil {
         });
 
         try {
-
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(fromEmail));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(toEmail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject(subject);
-            message.setText(body);
+
+            if (isHtml) {
+                // Tell JavaMail this is HTML content
+                message.setContent(body, "text/html; charset=UTF-8");
+            } else {
+                message.setText(body);
+            }
 
             Transport.send(message);
 

@@ -86,25 +86,53 @@ public class TransactionServlet extends HttpServlet {
 
             if (transactionSuccess) {
 
-                String message =
-                        "Payment Successful!\n\n" +
-                        "Transaction ID: " + transactionId + "\n" +
-                        "Booking ID: " + bookingId + "\n" +
-                        "Amount: " + amount + "\n\n" +
-                        "Your booking is CONFIRMED.";
+                String message = "<!DOCTYPE html>"
+                        + "<html>"
+                        + "<head>"
+                        + "<meta charset='UTF-8'>"
+                        + "<style>"
+                        + "  body { font-family: 'Poppins', sans-serif; background-color: #f9f9f9; color: #333; }"
+                        + "  .container { max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }"
+                        + "  h2 { color: #d4af37; }"
+                        + "  table { width: 100%; border-collapse: collapse; margin-top: 20px; }"
+                        + "  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }"
+                        + "  .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #888; }"
+                        + "  .footer img { max-width: 150px; margin-top: 10px; }"
+                        + "</style>"
+                        + "</head>"
+                        + "<body>"
+                        + "<div class='container'>"
+                        + "<h2>Booking Confirmation</h2>"
+                        + "<p>Dear " + user.getName() + ",</p>"
+                        + "<p>Thank you for your booking at <b>Principe Grand Hotel</b>.</p>"
+                        + "<table>"
+                        + "  <tr><th>Transaction ID</th><td>" + transactionId + "</td></tr>"
+                        + "  <tr><th>Booking ID</th><td>" + bookingId + "</td></tr>"
+                        + "  <tr><th>Amount Paid</th><td>$" + amount + "</td></tr>"
+                        + "</table>"
+                        + "<p>Your booking is <b>CONFIRMED</b>.</p>"
+                        + "<div class='footer'>"
+                        + "  <p>Principe Grand Hotel</p>"
+                        + "  <img src='https://your-hotel-image-url.com/footer-image.jpg' alt='Hotel Logo'>"
+                        + "</div>"
+                        + "</div>"
+                        + "</body>"
+                        + "</html>";
 
                 EmailUtil.sendBill(
                         user.getEmail(),
                         "Booking Confirmation",
-                        message
+                        message,  // your HTML content
+                        true      // set true for HTML
                 );
+
                 
                 // Save details in session to pass to bill.jsp
                 session.setAttribute("bookingDetail", booking);
                 session.setAttribute("transactionId", transactionId);
                 session.setAttribute("amountPaid", amount);
 
-                response.sendRedirect(request.getContextPath() + "/views/UserPages/bill.jsp");
+                response.sendRedirect(request.getContextPath() + "/views/UserPages/Bill.jsp");
             } else {
                 response.sendRedirect(request.getContextPath() + "/views/error.jsp");
             }
