@@ -129,8 +129,8 @@ public class AdminDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, admin.getUsername());
-            ps.setString(2, admin.getName());
-            ps.setString(3, admin.getPassword());
+            ps.setString(2, admin.getPassword());
+            ps.setString(3, admin.getName());
             ps.setString(4, admin.getRole());
             if (admin.getImage() != null) {
                 ps.setBytes(5, admin.getImage());
